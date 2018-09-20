@@ -3,6 +3,7 @@
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    int size = getAll().length;
 
     void clear() {
         for (int i = 0; i < storage.length; i++){
@@ -16,11 +17,11 @@ public class ArrayStorage {
         while (i < storage.length){
             if (storage[i] == null) {
                 indexNull = i;
+                storage[indexNull] = r;
                 break;
             }
             i++;
         }
-        storage[indexNull] = r;
     }
 
     Resume get(String uuid) {
@@ -68,7 +69,6 @@ public class ArrayStorage {
     }
 
     int size() {
-        Resume[] storageWithOutNull = getAll();
-        return storageWithOutNull.length;
+        return size;
     }
 }
