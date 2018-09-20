@@ -12,12 +12,10 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        int indexNull = 0;
         int i = 0;
         while (i < storage.length){
             if (storage[i] == null) {
-                indexNull = i;
-                storage[indexNull] = r;
+                storage[i] = r;
                 break;
             }
             i++;
