@@ -8,20 +8,13 @@ public class ArrayStorage {
     void clear() {
         for (int i = 0; i < storage.length; i++){
             storage[i] = null;
-            size = 0;
         }
+        size = 0;
     }
 
     void save(Resume r) {
-        int i = 0;
-        while (i < storage.length){
-            if (storage[i] == null) {
-                storage[i] = r;
-                size++;
-                break;
-            }
-            i++;
-        }
+        storage[size] = r;
+        size++;
     }
 
     Resume get(String uuid) {
@@ -43,6 +36,7 @@ public class ArrayStorage {
                 for (int k = i; k < storage.length - 1; k++) {
                     storage[k] = storage[k + 1];
                 }
+                storage[storage.length - 1] = null;
                 break;
             }
         }
