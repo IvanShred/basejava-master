@@ -5,7 +5,7 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     private static final Resume[] storage = new Resume[10000];
-    private static int size = 0;
+    private int size = 0;
 
     public int getIndex(String uuid){
         for (int i = 0; i < size; i++) {
