@@ -1,57 +1,78 @@
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int size = 0;
+    private static final Resume[] storage = new Resume[10000];
+    private static int size = 0;
 
-    void clear() {
-        for (int i = 0; i < size; i++){
-            storage[i] = null;
+    public int getIndex(String uuid){
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                return i;
+            }
         }
+        return -1;
+    }
+
+    public static void clear() {
+        Arrays.fill(storage, null);
         size = 0;
     }
 
-    void save(Resume r) {
-        storage[size] = r;
-        size++;
+    public void save(Resume r) {
+        if (getIndex(r.toString())== -1 && size < storage.length) {
+            storage[size] = r;
+            size++;
+        }
+        else System.out.println("Resume already present");
     }
 
-    Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].toString().equals(uuid)) {
-                return storage[i];
+    public Resume get(String uuid) {
+        if (getIndex(uuid)!= -1) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].toString().equals(uuid)) {
+                    return storage[i];
+                }
             }
+        }
+        else {
+            System.out.println("Resume not present");
         }
         return null;
     }
 
-    void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if(storage[i].toString().equals(uuid)){
-                storage[i] = null;
-                size--;
-                for (int k = i; k < size - 1; k++) {
-                    storage[k] = storage[k + 1];
+    public void update(Resume resume){
+        int indexElementForUpdate = getIndex(resume.toString());
+        if (indexElementForUpdate!= -1) {
+                storage[indexElementForUpdate] = resume;
+        }
+        else System.out.println("Resume not present");
+    }
+
+    public void delete(String uuid) {
+        if (getIndex(uuid)!= -1) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].toString().equals(uuid)) {
+                    storage[i] = storage[size - 1];
+                    storage[size - 1] = null;
+                    size--;
+                    break;
                 }
-                storage[size - 1] = null;
-                break;
             }
         }
+        else System.out.println("Resume not present");
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
-        Resume[] storageNew = new Resume[size];
-        for(int i = 0;  i < size;  i++) {
-            storageNew[i] = storage[i];
-        }
-        return storageNew;
+    public Resume[] getAll() {
+        return Arrays.copyOf(storage, size);
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 }
