@@ -26,7 +26,7 @@ public class ArrayStorage {
             storage[size] = r;
             size++;
         }
-        else System.out.println("Resume already present");
+        else System.out.println("Resume already present or array full");
     }
 
     public Resume get(String uuid) {
