@@ -16,7 +16,7 @@ public class ArrayStorage {
         return -1;
     }
 
-    public static void clear() {
+    public void clear() {
         Arrays.fill(storage, null);
         size = 0;
     }
