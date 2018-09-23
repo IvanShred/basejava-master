@@ -8,40 +8,41 @@ public class ArrayStorage {
     private int size = 0;
 
     public void clear() {
-        Arrays.fill(storage, 0, size , null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     public void save(Resume resume) {
-        if (getIndex(resume.toString())== -1 && size < storage.length) {
+        if (getIndex(resume.getUuid()) != -1) {
+            System.out.println("Resume already present");
+        } else if (size == storage.length) {
+            System.out.println("Array full");
+        } else {
             storage[size] = resume;
             size++;
-        } else {
-            System.out.println("Resume already present or array full");
         }
     }
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index!= -1) {
+        if (index != -1) {
             return storage[index];
-        } else {
-            System.out.println("Resume not present");
         }
+        System.out.println("Resume not present");
         return null;
     }
 
-    public void update(Resume resume){
-        int index = getIndex(resume.toString());
-        if (index!= -1) {
-                storage[index] = resume;
+    public void update(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (index != -1) {
+            storage[index] = resume;
         } else {
             System.out.println("Resume not present");
         }
     }
 
     public void delete(String uuid) {
-        if (getIndex(uuid)!= -1) {
+        if (getIndex(uuid) != -1) {
             for (int i = 0; i < size; i++) {
                 if (storage[i].toString().equals(uuid)) {
                     storage[i] = storage[size - 1];
@@ -66,7 +67,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private int getIndex(String uuid){
+    private int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].toString().equals(uuid)) {
                 return i;
