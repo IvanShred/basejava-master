@@ -7,48 +7,37 @@ public class ArrayStorage {
     private static final Resume[] storage = new Resume[10000];
     private int size = 0;
 
-    public int getIndex(String uuid){
-        for (int i = 0; i < size; i++) {
-            if (storage[i].toString().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, size - 1, null);
         size = 0;
     }
 
-    public void save(Resume r) {
-        if (getIndex(r.toString())== -1 && size < storage.length) {
-            storage[size] = r;
+    public void save(Resume resume) {
+        if (getIndex(resume.toString())== -1 && size < storage.length) {
+            storage[size] = resume;
             size++;
+        } else {
+            System.out.println("Resume already present or array full");
         }
-        else System.out.println("Resume already present or array full");
     }
 
     public Resume get(String uuid) {
-        if (getIndex(uuid)!= -1) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].toString().equals(uuid)) {
-                    return storage[i];
-                }
-            }
-        }
-        else {
+        int index = getIndex(uuid);
+        if (index!= -1) {
+            return storage[index];
+        } else {
             System.out.println("Resume not present");
         }
         return null;
     }
 
     public void update(Resume resume){
-        int indexElementForUpdate = getIndex(resume.toString());
-        if (indexElementForUpdate!= -1) {
-                storage[indexElementForUpdate] = resume;
+        int index = getIndex(resume.toString());
+        if (index!= -1) {
+                storage[index] = resume;
+        } else {
+            System.out.println("Resume not present");
         }
-        else System.out.println("Resume not present");
     }
 
     public void delete(String uuid) {
@@ -61,8 +50,9 @@ public class ArrayStorage {
                     break;
                 }
             }
+        } else {
+            System.out.println("Resume not present");
         }
-        else System.out.println("Resume not present");
     }
 
     /**
@@ -74,5 +64,14 @@ public class ArrayStorage {
 
     public int size() {
         return size;
+    }
+
+    private int getIndex(String uuid){
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
