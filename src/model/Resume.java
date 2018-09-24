@@ -1,9 +1,11 @@
 package model;
 
+import java.util.Comparator;
+
 /**
  * Initial resume class
  */
-public class Resume implements Comparable<Resume>{
+public class Resume implements Comparable<Resume>, Comparator<Resume>{
 
     // Unique identifier
     private String uuid;
@@ -39,5 +41,10 @@ public class Resume implements Comparable<Resume>{
     @Override
     public int compareTo(Resume o) {
         return uuid.compareTo(o.uuid);
+    }
+
+    @Override
+    public int compare(Resume o1, Resume o2) {
+        return o1.getUuid().compareTo(o2.getUuid());
     }
 }
