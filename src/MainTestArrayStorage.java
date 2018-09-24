@@ -1,5 +1,8 @@
+import model.Resume;
+import storage.ArrayStorage;
+
 /**
- * Test for your ArrayStorage implementation
+ * Test for your storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
@@ -18,7 +21,7 @@ public class MainTestArrayStorage {
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
-        ARRAY_STORAGE.update(r3);
+
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
         printAll();
@@ -32,8 +35,8 @@ public class MainTestArrayStorage {
 
     static void printAll() {
         System.out.println("\nGet All");
-        for (Resume resume : ARRAY_STORAGE.getAll()) {
-            System.out.println(resume);
+        for (Resume r : ARRAY_STORAGE.getAll()) {
+            System.out.println(r);
         }
     }
 }
