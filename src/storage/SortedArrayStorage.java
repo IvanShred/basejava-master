@@ -13,7 +13,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         } else if (size >= STORAGE_LIMIT) {
             System.out.println("Storage overflow");
         } else {
-            int index = -1 - getIndex(r.getUuid())/*Arrays.binarySearch(storage, 0, size, r)*/;
+            int index = -1 - getIndex(r.getUuid());
             for (int i = index; i < size; i++) {
                 storage[i + 1] = storage[i];
             }
