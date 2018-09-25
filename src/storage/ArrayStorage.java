@@ -7,15 +7,12 @@ import model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void saveResume(Resume r) {
+    public void saveResume(Resume r, int index) {
         storage[size] = r;
-        size++;
     }
 
-    public void deleteResume(String uuid) {
-        storage[getIndex(uuid)] = storage[size - 1];
-        storage[size - 1] = null;
-        size--;
+    public void deleteResume(int index) {
+        storage[index] = storage[size - 1];
     }
 
     protected int getIndex(String uuid) {
