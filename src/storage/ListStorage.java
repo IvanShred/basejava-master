@@ -21,7 +21,7 @@ public class ListStorage extends AbstractStorage {
         if (index == -1) {
             throw new NotExistStorageException(r.getUuid());
         }
-        storage.add(index, r);
+        storage.set(index, r);
 
     }
 
