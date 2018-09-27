@@ -1,6 +1,5 @@
 import model.Resume;
 import storage.ArrayStorage;
-import storage.SortedArrayStorage;
 
 /**
  * Test for your storage.ArrayStorage implementation
