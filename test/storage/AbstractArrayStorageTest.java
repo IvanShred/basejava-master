@@ -54,9 +54,9 @@ public class AbstractArrayStorageTest {
     @Test
     public void getAll() {
         Resume[] resumes = storage.getAll();
-        Assert.assertEquals(resumes[0].getUuid(), UUID_1);
-        Assert.assertEquals(resumes[1].getUuid(), UUID_2);
-        Assert.assertEquals(resumes[2].getUuid(), UUID_3);
+        Assert.assertEquals(resumes[0], resume1);
+        Assert.assertEquals(resumes[1], resume2);
+        Assert.assertEquals(resumes[2], resume3);
     }
 
     @Test
