@@ -50,7 +50,7 @@ public class AbstractArrayStorageTest {
     public void update() {
         Resume resume = new Resume(UUID_1);
         storage.update(resume);
-        assertTrue(resume == storage.get(UUID_1));
+        assertEquals(resume, storage.get(UUID_1));
     }
 
     @Test
