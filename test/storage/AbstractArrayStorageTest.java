@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 public class AbstractArrayStorageTest {
     private Storage storage;
 
@@ -35,46 +37,47 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void size() {
-        Assert.assertEquals(3, storage.size());
+        assertEquals(3, storage.size());
     }
 
     @Test
     public void clear() {
         storage.clear();
-        Assert.assertEquals(0, storage.size());
+        assertEquals(0, storage.size());
     }
 
     @Test
     public void update() {
         Resume resume = new Resume(UUID_1);
         storage.update(resume);
-        Assert.assertTrue(resume == storage.get(UUID_1));
+        assertTrue(resume == storage.get(UUID_1));
     }
 
     @Test
     public void getAll() {
         Resume[] resumes = storage.getAll();
-        Assert.assertEquals(resumes[0], resume1);
-        Assert.assertEquals(resumes[1], resume2);
-        Assert.assertEquals(resumes[2], resume3);
+        assertEquals(3, storage.size());
+        assertEquals(resumes[0], resume1);
+        assertEquals(resumes[1], resume2);
+        assertEquals(resumes[2], resume3);
     }
 
     @Test
     public void save() {
         storage.save(resume4);
-        Assert.assertEquals(4, storage.size());
+        assertEquals(4, storage.size());
     }
 
     @Test
     public void delete() {
         storage.delete(UUID_1);
-        Assert.assertEquals(2, storage.size());
+        assertEquals(2, storage.size());
     }
 
     @Test
     public void get() {
         Resume resume = storage.get(UUID_1);
-        Assert.assertEquals(resume.getUuid(), UUID_1);
+        assertEquals(resume.getUuid(), UUID_1);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -94,7 +97,7 @@ public class AbstractArrayStorageTest {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
-            Assert.fail();
+            fail();
         }
         storage.save(new Resume());
     }
