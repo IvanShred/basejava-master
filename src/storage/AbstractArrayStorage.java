@@ -60,11 +60,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected boolean isExistElement(String uuid) {
-        if (getIndex(uuid) >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return getIndex(uuid) >= 0;
     }
 
     protected abstract void fillDeletedElement(int index);

@@ -57,10 +57,6 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected boolean isExistElement(String uuid) {
-        if (getIndex(uuid) != -1) {
-            return true;
-        } else {
-            return false;
-        }
+        return getIndex(uuid) != -1;
     }
 }
