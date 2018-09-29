@@ -14,32 +14,38 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume r) {
+    protected void updateResume(Resume r) {
         storage.put(r.getUuid(), r);
     }
 
     @Override
-    public void save(Resume r) {
+    protected void saveResume(Resume r) {
         storage.put(r.getUuid(), r);
     }
 
     @Override
-    public Resume get(String uuid) {
+    protected Resume getResume(String uuid) {
         return storage.get(uuid);
     }
 
     @Override
-    public void delete(String uuid) {
+    protected void deleteResume(String uuid) {
         storage.remove(uuid);
     }
 
     @Override
-    public Map<String, Resume> getAll() {
-        return storage;
+    public Resume[] getAll() {
+        return storage.values().toArray(new Resume[storage.size()]);
     }
 
     @Override
     public int size() {
         return storage.size();
     }
+
+    @Override
+    protected boolean isExistElement(String uuid) {
+        return storage.containsKey(uuid);
+    }
+
 }
