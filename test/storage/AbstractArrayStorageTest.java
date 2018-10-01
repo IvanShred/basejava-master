@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class AbstractArrayStorageTest {
-    private Storage storage;
+    private AbstractArrayStorage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -30,7 +30,7 @@ public class AbstractArrayStorageTest {
         RESUME_4 = new Resume(UUID_4);
     }
 
-    protected AbstractArrayStorageTest(Storage storage) {
+    protected AbstractArrayStorageTest(AbstractArrayStorage storage) {
         this.storage = storage;
     }
 

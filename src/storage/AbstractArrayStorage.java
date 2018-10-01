@@ -43,20 +43,20 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(String uuid, Object index) {
+    protected Resume getResume(Object index) {
         return storage[(int) index];
     }
 
     @Override
-    protected void deleteResume(String uuid, Object index) {
+    protected void deleteResume(Object index) {
         fillDeletedElement((int) index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected boolean isExistElement(String uuid) {
-        return (int)getIndex(uuid) >= 0;
+    protected boolean isExistElement(Object index) {
+        return (int)index >= 0;
     }
 
     protected abstract void fillDeletedElement(int index);

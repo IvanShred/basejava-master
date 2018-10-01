@@ -24,13 +24,13 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         Object index = getIndexElement(uuid);
-        return getResume(uuid, index);
+        return getResume(index);
     }
 
     @Override
     public void delete(String uuid) {
         Object index = getIndexElement(uuid);
-        deleteResume(uuid, index);
+        deleteResume(index);
     }
 
     @Override
@@ -41,7 +41,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected Object getIndexElement(String uuid) {
         Object indexElement = getIndex(uuid);
-        if (isExistElement(uuid)) {
+        if (isExistElement(indexElement)) {
             return indexElement;
         } else {
             throw new NotExistStorageException(uuid);
@@ -50,7 +50,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected Object getIndexElementForSave(String uuid){
         Object indexElement = getIndex(uuid);
-        if (isExistElement(uuid)) {
+        if (isExistElement(indexElement)) {
             throw new ExistStorageException(uuid);
         } else {
             return indexElement;
@@ -59,13 +59,13 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getIndex(String uuid);
 
-    protected abstract boolean isExistElement(String uuid);
+    protected abstract boolean isExistElement(Object index);
 
     protected abstract void updateResume(Resume r, Object index);
 
     protected abstract void saveResume(Resume r, Object index);
 
-    protected abstract Resume getResume(String uuid, Object index);
+    protected abstract Resume getResume(Object index);
 
-    protected abstract void deleteResume(String uuid, Object index);
+    protected abstract void deleteResume(Object index);
 }
