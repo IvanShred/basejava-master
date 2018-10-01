@@ -15,7 +15,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(Resume r, Object index) {
-        storage.set((int)index, r);
+        storage.set((int) index, r);
     }
 
     @Override
@@ -24,13 +24,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume( Object index) {
-        return storage.get((int)index);
+    protected Resume getResume(Object index) {
+        return storage.get((int) index);
     }
 
     @Override
     protected void deleteResume(Object index) {
-        storage.remove((int)index);
+        storage.remove((int) index);
     }
 
     @Override
