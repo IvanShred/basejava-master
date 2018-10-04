@@ -6,47 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    private List<Resume> storage = new ArrayList<>();
+    private List<Resume> list = new ArrayList<>();
 
     @Override
-    public void clear() {
-        storage.clear();
-    }
-
-    @Override
-    protected void updateResume(Resume r, Object index) {
-        storage.set((int) index, r);
-    }
-
-    @Override
-    protected void saveResume(Resume r, Object index) {
-        storage.add(r);
-    }
-
-    @Override
-    protected Resume getResume(Object index) {
-        return storage.get((int) index);
-    }
-
-    @Override
-    protected void deleteResume(Object index) {
-        storage.remove((int) index);
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[storage.size()]);
-    }
-
-    @Override
-    public int size() {
-        return storage.size();
-    }
-
-    @Override
-    protected Object getIndex(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (storage.get(i).getUuid().equals(uuid)) {
+    protected Integer getSearchKey(String uuid) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUuid().equals(uuid)) {
                 return i;
             }
         }
@@ -54,7 +19,42 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExistElement(Object index) {
-        return index != null;
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
+    protected void doUpdate(Resume r, Object searchKey) {
+        list.set((Integer) searchKey, r);
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
+        list.add(r);
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return list.get((Integer) searchKey);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        list.remove(((Integer) searchKey).intValue());
+    }
+
+    @Override
+    public void clear() {
+        list.clear();
+    }
+
+    @Override
+    public Resume[] getAll() {
+        return list.toArray(new Resume[list.size()]);
+    }
+
+    @Override
+    public int size() {
+        return list.size();
     }
 }

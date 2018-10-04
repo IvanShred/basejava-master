@@ -5,6 +5,9 @@ import model.Resume;
 
 import java.util.Arrays;
 
+/**
+ * Array based storage for Resumes
+ */
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
 
@@ -21,8 +24,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(Resume r, Object index) {
-        storage[(int) index] = r;
+    protected void doUpdate(Resume r, Object index) {
+        storage[(Integer) index] = r;
     }
 
     /**
@@ -33,36 +36,34 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveResume(Resume r, Object index) {
+    protected void doSave(Resume r, Object index) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            insertElement(r, (int) index);
+            insertElement(r, (Integer) index);
             size++;
         }
     }
 
     @Override
-    protected Resume getResume(Object index) {
-        return storage[(int) index];
-    }
-
-    @Override
-    protected void deleteResume(Object index) {
-        fillDeletedElement((int) index);
+    public void doDelete(Object index) {
+        fillDeletedElement((Integer) index);
         storage[size - 1] = null;
         size--;
     }
 
+    public Resume doGet(Object index) {
+        return storage[(Integer) index];
+    }
+
     @Override
-    protected boolean isExistElement(Object index) {
-        return (int)index >= 0;
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
     }
 
     protected abstract void fillDeletedElement(int index);
 
     protected abstract void insertElement(Resume r, int index);
 
-    protected abstract Object getIndex(String uuid);
-
+    protected abstract Integer getSearchKey(String uuid);
 }

@@ -6,66 +6,51 @@ import model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    @Override
-    public abstract void clear();
+    protected abstract Object getSearchKey(String uuid);
 
-    @Override
+    protected abstract void doUpdate(Resume r, Object searchKey);
+
+    protected abstract boolean isExist(Object searchKey);
+
+    protected abstract void doSave(Resume r, Object searchKey);
+
+    protected abstract Resume doGet(Object searchKey);
+
+    protected abstract void doDelete(Object searchKey);
+
     public void update(Resume r) {
-        Object index = getIndexElement(r.getUuid());
-        updateResume(r, index);
+        Object searchKey = getExistedSearchKey(r.getUuid());
+        doUpdate(r, searchKey);
     }
 
-    @Override
     public void save(Resume r) {
-        Object index = getIndexElementForSave(r.getUuid());
-        saveResume(r, index);
+        Object searchKey = getNotExistedSearchKey(r.getUuid());
+        doSave(r, searchKey);
     }
 
-    @Override
-    public Resume get(String uuid) {
-        Object index = getIndexElement(uuid);
-        return getResume(index);
-    }
-
-    @Override
     public void delete(String uuid) {
-        Object index = getIndexElement(uuid);
-        deleteResume(index);
+        Object searchKey = getExistedSearchKey(uuid);
+        doDelete(searchKey);
     }
 
-    @Override
-    public abstract Resume[] getAll();
+    public Resume get(String uuid) {
+        Object searchKey = getExistedSearchKey(uuid);
+        return doGet(searchKey);
+    }
 
-    @Override
-    public abstract int size();
-
-    protected Object getIndexElement(String uuid) {
-        Object indexElement = getIndex(uuid);
-        if (isExistElement(indexElement)) {
-            return indexElement;
-        } else {
+    private Object getExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
+        return searchKey;
     }
 
-    protected Object getIndexElementForSave(String uuid){
-        Object indexElement = getIndex(uuid);
-        if (isExistElement(indexElement)) {
+    private Object getNotExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
-        } else {
-            return indexElement;
         }
+        return searchKey;
     }
-
-    protected abstract Object getIndex(String uuid);
-
-    protected abstract boolean isExistElement(Object index);
-
-    protected abstract void updateResume(Resume r, Object index);
-
-    protected abstract void saveResume(Resume r, Object index);
-
-    protected abstract Resume getResume(Object index);
-
-    protected abstract void deleteResume(Object index);
 }
