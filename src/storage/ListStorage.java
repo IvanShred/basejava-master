@@ -3,8 +3,6 @@ package storage;
 import model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -51,8 +49,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        Collections.sort(list);
+    protected List<Resume> getList() {
         return list;
     }
 

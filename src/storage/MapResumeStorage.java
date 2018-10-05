@@ -13,13 +13,8 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<Resume>();
-        for (Map.Entry<String, Resume> entry : storage.entrySet()) {
-            resumes.add(entry.getValue());
-        }
-        Collections.sort(resumes);
-        return resumes;
+    protected List<Resume> getList() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
@@ -29,12 +24,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected Resume getSearchKey(String uuid) {
-        for (Map.Entry<String, Resume> entry : storage.entrySet()) {
-            if (entry.getValue().getUuid().equals(uuid)) {
-                return entry.getValue();
-            }
-        }
-        return null;
+        return storage.get(uuid);
     }
 
     @Override
@@ -44,7 +34,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return storage.containsValue(searchKey);
+        return searchKey != null;
     }
 
     @Override
@@ -59,12 +49,8 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(Object searchKey) {
-        for (Map.Entry<String, Resume> entry : storage.entrySet()) {
-            if (entry.getValue().equals(searchKey)){
-                storage.remove(entry.getKey());
-                break;
-            }
-        }
+        Resume resume = (Resume) searchKey;
+        storage.remove(resume.getUuid());
     }
 
 }

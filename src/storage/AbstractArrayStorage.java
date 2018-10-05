@@ -5,7 +5,6 @@ import model.Resume;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,11 +35,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
      */
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<Resume>();
-        resumes = Arrays.asList(Arrays.copyOfRange(storage, 0, size));
-        Collections.sort(resumes);
-        return resumes;
+    protected List<Resume> getList() {
+        List<Resume> list = new ArrayList<Resume>();
+        list = Arrays.asList(Arrays.copyOfRange(storage, 0, size));
+        return list;
     }
 
     @Override
