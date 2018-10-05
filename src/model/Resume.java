@@ -1,11 +1,14 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.UUID;
 
 /**
  * Initial resume class
  */
-public class Resume{
+public class Resume implements Comparable<Resume> {
 
     // Unique identifier
     private final String uuid;
@@ -29,6 +32,10 @@ public class Resume{
         return uuid;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,5 +54,10 @@ public class Resume{
     @Override
     public String toString() {
         return uuid;
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return fullName.compareTo(o.getFullName());
     }
 }

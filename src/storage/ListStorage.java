@@ -3,10 +3,12 @@ package storage;
 import model.Resume;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    private List<Resume> list = new ArrayList<>();
+    private List<Resume> list = new ArrayList<Resume>();
 
     @Override
     protected Integer getSearchKey(String uuid) {
@@ -49,8 +51,9 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return list.toArray(new Resume[list.size()]);
+    public List<Resume> getAllSorted() {
+        Collections.sort(list);
+        return list;
     }
 
     @Override
