@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -13,19 +14,32 @@ public class Resume implements Comparable<Resume> {
 
     private final String fullName;
 
-    public Resume(String fullName) {
-        this(UUID.randomUUID().toString(), fullName);
+    //private final Map<TypesContacts, String> contacts;
+
+    public Resume(String fullName/*, Map<TypesContacts, String> contacts*/) {
+        this(UUID.randomUUID().toString(), fullName/*, contacts*/);
     }
 
-    public Resume(String uuid, String fullName) {
+    public Resume(String uuid, String fullName/*, Map<TypesContacts, String> contacts*/) {
         Objects.requireNonNull(uuid, "uuid must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
+        //this.contacts = contacts;
     }
 
     public String getUuid() {
         return uuid;
+    }
+
+    public enum TypesContacts {
+        PHONE,
+        SKYPE,
+        EMAIL,
+        LINKEDIN,
+        GITHUB,
+        STACKOVERFLOW,
+        HOMEPAGE;
     }
 
     @Override
