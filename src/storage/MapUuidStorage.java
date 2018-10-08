@@ -4,52 +4,51 @@ import model.Resume;
 
 import java.util.*;
 
-public class MapUuidStorage extends AbstractStorage{
-    private Map<String, Resume> storage = new HashMap<>();
+public class MapUuidStorage extends AbstractStorage<String> {
+    private Map<String, Resume> map = new HashMap<>();
 
     @Override
-    public void clear() {
-        storage.clear();
-    }
-
-    @Override
-    protected List<Resume> getList() {
-        return new ArrayList<Resume>(storage.values());
-    }
-
-    @Override
-    public int size() {
-        return storage.size();
-    }
-
-
-    @Override
-    protected Object getSearchKey(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        storage.put(r.getUuid(), r);
+    protected void doUpdate(Resume r, String uuid) {
+        map.put(uuid, r);
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return storage.containsKey(searchKey);
+    protected boolean isExist(String uuid) {
+        return map.containsKey(uuid);
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
-        storage.put(r.getUuid(), r);
+    protected void doSave(Resume r, String uuid) {
+        map.put(uuid, r);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return storage.get(searchKey);
+    protected Resume doGet(String uuid) {
+        return map.get(uuid);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        storage.remove(searchKey);
+    protected void doDelete(String uuid) {
+        map.remove(uuid);
+    }
+
+    @Override
+    public void clear() {
+        map.clear();
+    }
+
+    @Override
+    public List<Resume> doCopyAll() {
+        return new ArrayList<>(map.values());
+    }
+
+    @Override
+    public int size() {
+        return map.size();
     }
 }
