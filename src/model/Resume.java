@@ -1,8 +1,6 @@
 package model;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Initial resume class
@@ -14,18 +12,35 @@ public class Resume implements Comparable<Resume> {
 
     private final String fullName;
 
-    //private final Map<TypesContacts, String> contacts;
+    private Map<TypesContacts, String> contacts;
 
-    public Resume(String fullName/*, Map<TypesContacts, String> contacts*/) {
-        this(UUID.randomUUID().toString(), fullName/*, contacts*/);
+    private List<Section> sections;
+
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
     }
 
-    public Resume(String uuid, String fullName/*, Map<TypesContacts, String> contacts*/) {
+    public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "uuid must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
-        //this.contacts = contacts;
+    }
+
+    public Map<TypesContacts, String> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(Map<TypesContacts, String> contacts) {
+        this.contacts = contacts;
+    }
+
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
     }
 
     public String getUuid() {
@@ -40,6 +55,73 @@ public class Resume implements Comparable<Resume> {
         GITHUB,
         STACKOVERFLOW,
         HOMEPAGE;
+    }
+
+    public class Section {
+        private SectionType nameSection;
+        private Object content;
+
+        public Section(SectionType nameSection, Object content) {
+            this.nameSection = nameSection;
+            this.content = content;
+        }
+
+        public SectionType getNameSection() {
+            return nameSection;
+        }
+
+        public void setNameSection(SectionType nameSection) {
+            this.nameSection = nameSection;
+        }
+
+        public Object getContent() {
+            return content;
+        }
+
+        public void setContent(Object content) {
+            this.content = content;
+        }
+    }
+
+    public class TextSection extends Section {
+        public TextSection(SectionType nameSection, String text) {
+            super(nameSection, text);
+        }
+    }
+
+    public class ListStringSection extends Section {
+        public ListStringSection(SectionType nameSection, List<String> list) {
+            super(nameSection, list);
+        }
+    }
+
+    public class Content {
+        private Date dateBegin;
+        private Date dateEnd;
+        private String organization;
+        private String position;
+        private String description;
+
+        public Content(Date dateBegin, Date dateEnd, String organization, String position, String description) {
+            this.dateBegin = dateBegin;
+            this.dateEnd = dateEnd;
+            this.organization = organization;
+            this.position = position;
+            this.description = description;
+        }
+
+        public Content(Date dateBegin, Date dateEnd, String organization, String description) {
+            this.dateBegin = dateBegin;
+            this.dateEnd = dateEnd;
+            this.organization = organization;
+            this.description = description;
+        }
+    }
+
+    public class ListContentSection extends Section {
+        public ListContentSection(SectionType nameSection, List<Content> content) {
+            super(nameSection, content);
+        }
     }
 
     @Override
