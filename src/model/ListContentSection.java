@@ -3,7 +3,9 @@ package model;
 import java.util.List;
 
 public class ListContentSection extends Section{
-    public ListContentSection(SectionType nameSection, List<Content> content) {
-        super(nameSection, content);
+    private List<Content> list;
+
+    public ListContentSection(List<Content> list) {
+        this.list = list;
     }
 }
