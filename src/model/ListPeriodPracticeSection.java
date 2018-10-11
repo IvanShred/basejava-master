@@ -3,18 +3,18 @@ package model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListStringSection extends Section{
-    private List<String> list;
+public class ListPeriodPracticeSection extends Section{
+    private List<PeriodPractice> list;
 
-    public ListStringSection(List<String> list) {
+    public ListPeriodPracticeSection(List<PeriodPractice> list) {
         this.list = list;
     }
 
-    public List<String> getList() {
+    public List<PeriodPractice> getList() {
         return list;
     }
 
-    public void setList(List<String> list) {
+    public void setList(List<PeriodPractice> list) {
         this.list = list;
     }
 
@@ -22,7 +22,7 @@ public class ListStringSection extends Section{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ListStringSection that = (ListStringSection) o;
+        ListPeriodPracticeSection that = (ListPeriodPracticeSection) o;
         return Objects.equals(list, that.list);
     }
 
