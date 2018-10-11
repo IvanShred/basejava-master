@@ -19,6 +19,13 @@ public class ListPeriodPracticeSection extends Section{
     }
 
     @Override
+    public void printContent() {
+        for (PeriodPractice x : list) {
+            x.printPeriodPractice();
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -19,6 +19,13 @@ public class ListStringSection extends Section{
     }
 
     @Override
+    public void printContent() {
+        for (String x : list) {
+            System.out.println(x);
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

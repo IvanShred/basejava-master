@@ -9,12 +9,17 @@ public class TextSection extends Section {
         this.text = text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    @Override
+    public void printContent() {
+        System.out.println(text);
     }
 
     @Override

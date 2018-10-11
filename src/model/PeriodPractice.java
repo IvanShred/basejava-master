@@ -28,6 +28,14 @@ public class PeriodPractice {
         this.description = description;
     }
 
+    public void printPeriodPractice() {
+        if (position != null) {
+            System.out.println(dateBegin + " / " + dateEnd + " Организация:" + organization + " url:" + url + " Позиция:" + position + " Описание:" + description);
+        } else {
+            System.out.println(dateBegin + " / " + dateEnd + " Организация:" + organization + " url:" + url + " Описание:" + description);
+        }
+    }
+
     public LocalDate getDateBegin() {
         return dateBegin;
     }

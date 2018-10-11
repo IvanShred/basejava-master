@@ -51,6 +51,17 @@ public class TestResume {
         sections.put(SectionType.EDUCATION, education);
         resume.setSections(sections);
 
-        System.out.println(resume);
+        System.out.println(resume.getFullName());
+
+        EnumMap<ContactType, String> contactsForPrint = resume.getContacts();
+        for (EnumMap.Entry<ContactType, String> entry : contactsForPrint.entrySet()) {
+            System.out.println(entry.getKey().getName() + ": " + entry.getValue());
+        }
+
+        EnumMap<SectionType, Section> sectionsForPrint = resume.getSections();
+        for (EnumMap.Entry<SectionType, Section> entry : sectionsForPrint.entrySet()) {
+            System.out.println(entry.getKey().getTitle() + ":");
+            entry.getValue().printContent();
+        }
     }
 }
