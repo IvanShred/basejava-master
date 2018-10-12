@@ -6,6 +6,7 @@ public class TextSection extends Section {
     private String text;
 
     public TextSection(String text) {
+        Objects.requireNonNull(text, "text must not be null");
         this.text = text;
     }
 
@@ -15,11 +16,6 @@ public class TextSection extends Section {
 
     public String getText() {
         return text;
-    }
-
-    @Override
-    public void printContent() {
-        System.out.println(text);
     }
 
     @Override
@@ -33,5 +29,10 @@ public class TextSection extends Section {
     @Override
     public int hashCode() {
         return Objects.hash(text);
+    }
+
+    @Override
+    public String toString() {
+        return text;
     }
 }
