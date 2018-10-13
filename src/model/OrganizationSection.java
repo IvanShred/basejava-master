@@ -7,11 +7,11 @@ public class OrganizationSection extends Section{
     private List<Organization> list;
 
     public OrganizationSection(List<Organization> list) {
+        Objects.requireNonNull(list, "list must not be null");
         this.list = list;
     }
 
     public List<Organization> getList() {
-        Objects.requireNonNull(list, "list must not be null");
         return list;
     }
 
