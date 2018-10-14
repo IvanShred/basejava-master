@@ -1,9 +1,11 @@
 import model.*;
+import util.DateUtil;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 
-public class TestResume {
+public class ResumeTestData {
     public static void main(String[] args) {
         Resume resume = new Resume("Ivan Ivanov");
 
@@ -27,15 +29,15 @@ public class TestResume {
         listQualifications.add("PL/SQL");
         Section qualifications = new ListSection(listQualifications);
 
-        Organization organizationForExperience = new Organization(LocalDate.of(2013, 01, 02), LocalDate.of(2015, 01, 02), "SDE", "www.site1.ru", "Аналитик", "Составление ТЗ");
-        Organization organizationForExperience2 = new Organization(LocalDate.of(2015, 01, 03), LocalDate.of(2018, 01, 02), "Alpha", "www.site2.ru", "Тестировщик", "Автоматизированное тестирование");
+        Organization organizationForExperience = new Organization(DateUtil.of(2013, Month.JANUARY), DateUtil.of(2015, Month.JANUARY), "SDE", "www.site1.ru", "Аналитик", "Составление ТЗ");
+        Organization organizationForExperience2 = new Organization(DateUtil.of(2015, Month.JANUARY), DateUtil.of(2018, Month.JANUARY), "Alpha", "www.site2.ru", "Тестировщик", "Автоматизированное тестирование");
         List<Organization> listExperience = new ArrayList<>();
         listExperience.add(organizationForExperience);
         listExperience.add(organizationForExperience2);
         Section experience = new OrganizationSection(listExperience);
 
-        Organization organizationForEducation = new Organization(LocalDate.of(2010, 01, 02), LocalDate.of(2012, 01, 02), "Организация1", "www.site3.ru", null, "Курс1");
-        Organization organizationForEducation2 = new Organization(LocalDate.of(2012, 01, 03), LocalDate.of(2013, 01, 02), "Организация2", "www.site4.ru", null, "Курс2");
+        Organization organizationForEducation = new Organization(DateUtil.of(2010, Month.JANUARY), DateUtil.of(2012, Month.JANUARY), "Организация1", "www.site3.ru", null, "Курс1");
+        Organization organizationForEducation2 = new Organization(DateUtil.of(2012, Month.JANUARY), DateUtil.of(2013, Month.JANUARY), "Организация2", "www.site4.ru", null, "Курс2");
         List<Organization> listEducation = new ArrayList<>();
         listEducation.add(organizationForEducation);
         listEducation.add(organizationForEducation2);
