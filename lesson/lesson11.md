@@ -20,11 +20,11 @@
 - <a href="https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom">Initialization-on-demand holder idiom</a>
 
 ### Ресурсы
-- Алексей Владыкин, <a href="https://www.youtube.com/watch?v=zxZ0BXlTys0&list=PLlb7e2G7aSpRSBWi5jbGjIe-v_CjRO_Ug">Основы многопоточность в Java</a>
-- Виталий Чибриков, <a href="https://www.youtube.com/watch?v=dLDhB6SRXzw&list=PLrCZzMib1e9qkzxEuU_huxtSAxrW1t9NZ">Java. Многопоточность</a>
+- Алексей Владыкин, <a href="https://www.youtube.com/watch?v=zxZ0BXlTys0&organizations=PLlb7e2G7aSpRSBWi5jbGjIe-v_CjRO_Ug">Основы многопоточность в Java</a>
+- Виталий Чибриков, <a href="https://www.youtube.com/watch?v=dLDhB6SRXzw&organizations=PLrCZzMib1e9qkzxEuU_huxtSAxrW1t9NZ">Java. Многопоточность</a>
 - Computer Science Center, курс <a href="https://compscicenter.ru/courses/hp-course/2016-spring">Параллельное программирование</a>
-- Юрий Ткач, курс <a href="https://www.youtube.com/playlist?list=PL6jg6AGdCNaXo06LjCBmRao-qJdf38oKp">Advanced Java - Concurrency</a>
-- Головач, курс <a href="https://www.youtube.com/playlist?list=PLoij6udfBncgVRq487Me6yQa1kqtxobZS">Java Multithreading</a>
+- Юрий Ткач, курс <a href="https://www.youtube.com/playlist?organizations=PL6jg6AGdCNaXo06LjCBmRao-qJdf38oKp">Advanced Java - Concurrency</a>
+- Головач, курс <a href="https://www.youtube.com/playlist?organizations=PLoij6udfBncgVRq487Me6yQa1kqtxobZS">Java Multithreading</a>
 
 ## Домашнее задание
 - Реализовать deadlock

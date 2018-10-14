@@ -20,7 +20,7 @@
 - Ресурсы:
     - <a href="http://www.ozon.ru/context/detail/id/19383907/">Книга: Семь баз данных за семь недель. Введение в современные базы данных и идеологию NoSQL</a>
     - <a href="http://devcolibri.com/477">Работа с базами данных с помощью JDBC драйвера</a>
-    - <a href="https://www.youtube.com/playlist?list=PLIU76b8Cjem5qdMQLXiIwGLTLyUHkTqi2">Уроки по JDBC</a>
+    - <a href="https://www.youtube.com/playlist?organizations=PLIU76b8Cjem5qdMQLXiIwGLTLyUHkTqi2">Уроки по JDBC</a>
 
 ### ![hw](https://cloud.githubusercontent.com/assets/13649199/13672719/09593080-e6e7-11e5-81d1-5cb629c438ca.png) Домашнее задание HW13
 - Доделать `SqlStorage` без контактов и секций.
