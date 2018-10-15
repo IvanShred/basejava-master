@@ -13,7 +13,7 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        File dir = new File("./src/ru/javawebinar/basejava");
+        File dir = new File("./src");
         System.out.println(dir.isDirectory());
         String[] list = dir.list();
         if (list != null) {
@@ -26,6 +26,23 @@ public class MainFile {
             System.out.println(fis.read());
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+        recursionSearch(".");
+    }
+
+    public static void recursionSearch(String path) {
+        File file = new File(path);
+        File[] files = file.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            if (files != null) {
+                for (File f : files) {
+                    System.out.println(f.getName());
+                }
+                if (files[i].isDirectory()) {
+                    recursionSearch(files[i].getPath());
+                }
+            }
         }
     }
 }

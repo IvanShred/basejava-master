@@ -1,23 +1,24 @@
 package model;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class Organization {
-    private final LocalDate dateBegin;
-    private final LocalDate dateEnd;
     private final Link homePage;
-    private final String position;
-    private final String description;
+    private final List<PeriodActivity> periods;
 
-    public Organization(LocalDate dateBegin, LocalDate dateEnd, String name, String url, String position, String description) {
-        Objects.requireNonNull(dateBegin, "dateBegin must not be null");
-        Objects.requireNonNull(dateEnd, "dateEnd must not be null");
-        this.dateBegin = dateBegin;
-        this.dateEnd = dateEnd;
+    public Organization(String name, String url, List<PeriodActivity> periods) {
+        Objects.requireNonNull(periods, "periods must not be null");
         this.homePage = new Link(name, url);
-        this.position = position;
-        this.description = description;
+        this.periods = periods;
+    }
+
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<PeriodActivity> getPeriods() {
+        return periods;
     }
 
     @Override
@@ -25,39 +26,20 @@ public class Organization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return Objects.equals(dateBegin, that.dateBegin) &&
-                Objects.equals(dateEnd, that.dateEnd) &&
-                Objects.equals(homePage, that.homePage) &&
-                Objects.equals(position, that.position) &&
-                Objects.equals(description, that.description);
+        return Objects.equals(homePage, that.homePage) &&
+                Objects.equals(periods, that.periods);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateBegin, dateEnd, homePage, position, description);
+        return Objects.hash(homePage, periods);
     }
-
-//    @Override
-//    public String toString() {
-//        return "Организация{" +
-//                "Дата начала = " + dateBegin +
-//                ", Дата окончания = " + dateEnd +
-//                ", Наименование организации = '" + name + '\'' +
-//                ", url = '" + url + '\'' +
-//                ", Позиция = '" + position + '\'' +
-//                ", Описание = '" + description + '\'' +
-//                '}';
-//    }
-
 
     @Override
     public String toString() {
         return "Organization{" +
-                "dateBegin=" + dateBegin +
-                ", dateEnd=" + dateEnd +
-                ", homePage=" + homePage +
-                ", position='" + position + '\'' +
-                ", description='" + description + '\'' +
+                "homePage=" + homePage +
+                ", periods=" + periods +
                 '}';
     }
 }

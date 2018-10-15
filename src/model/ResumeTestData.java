@@ -1,13 +1,15 @@
-import model.*;
+package model;
+
 import util.DateUtil;
 
-import java.time.LocalDate;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
-        Resume resume = new Resume("Ivan Ivanov");
+    public static Resume getTestResume() {
+        Resume resume = new Resume("uuid1", "Name1");
 
         EnumMap<ContactType, String> contacts = resume.getContacts();
         contacts.put(ContactType.PHONE, "+79999999999");
@@ -29,21 +31,39 @@ public class ResumeTestData {
         listQualifications.add("PL/SQL");
         Section qualifications = new ListSection(listQualifications);
 
-        Organization organizationForExperience = new Organization(DateUtil.of(2013, Month.JANUARY), DateUtil.of(2015, Month.JANUARY), "SDE", "www.site1.ru", "Аналитик", "Составление ТЗ");
-        Organization organizationForExperience2 = new Organization(DateUtil.of(2015, Month.JANUARY), DateUtil.of(2018, Month.JANUARY), "Alpha", "www.site2.ru", "Тестировщик", "Автоматизированное тестирование");
+        List<PeriodActivity> periodsForExperience = new ArrayList<>();
+        PeriodActivity period1 = new PeriodActivity(DateUtil.of(2013, Month.JANUARY), DateUtil.of(2015, Month.JANUARY), "Аналитик", "Составление ТЗ");
+        periodsForExperience.add(period1);
+        Organization organizationForExperience = new Organization("SDE", "www.site1.ru", periodsForExperience);
+
+        List<PeriodActivity> periodsForExperience2 = new ArrayList<>();
+        PeriodActivity period2 = new PeriodActivity(DateUtil.of(2015, Month.JANUARY), DateUtil.of(2018, Month.JANUARY), "Тестировщик", "Автоматизированное тестирование");
+        periodsForExperience2.add(period2);
+        Organization organizationForExperience2 = new Organization("Alpha", "www.site2.ru", periodsForExperience2);
+
         List<Organization> listExperience = new ArrayList<>();
         listExperience.add(organizationForExperience);
         listExperience.add(organizationForExperience2);
         Section experience = new OrganizationSection(listExperience);
 
-        Organization organizationForEducation = new Organization(DateUtil.of(2010, Month.JANUARY), DateUtil.of(2012, Month.JANUARY), "Организация1", "www.site3.ru", null, "Курс1");
-        Organization organizationForEducation2 = new Organization(DateUtil.of(2012, Month.JANUARY), DateUtil.of(2013, Month.JANUARY), "Организация2", "www.site4.ru", null, "Курс2");
+        List<PeriodActivity> periodsForEducation = new ArrayList<>();
+        PeriodActivity period3 = new PeriodActivity(DateUtil.of(2010, Month.JANUARY), DateUtil.of(2012, Month.JANUARY), null, "Курс1");
+        PeriodActivity period4 = new PeriodActivity(DateUtil.of(2012, Month.JANUARY), DateUtil.of(2013, Month.JANUARY), null, "Курс2");
+        periodsForEducation.add(period3);
+        periodsForEducation.add(period4);
+        Organization organizationForEducation = new Organization("SMP", "www.site3.ru", periodsForEducation);
+
+        List<PeriodActivity> periodsForEducation2 = new ArrayList<>();
+        PeriodActivity period5 = new PeriodActivity(DateUtil.of(2010, Month.JANUARY), DateUtil.of(2012, Month.JANUARY), null, "Курс3");
+        periodsForEducation2.add(period5);
+        Organization organizationForEducation2 = new Organization("SGC", "www.site4.ru", periodsForEducation2);
+
         List<Organization> listEducation = new ArrayList<>();
         listEducation.add(organizationForEducation);
         listEducation.add(organizationForEducation2);
         Section education = new OrganizationSection(listEducation);
 
-        EnumMap<SectionType, Section> sections = resume.getSections();
+        EnumMap<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
         sections.put(SectionType.PERSONAL, personal);
         sections.put(SectionType.OBJECTIVE, objective);
@@ -53,17 +73,6 @@ public class ResumeTestData {
         sections.put(SectionType.EDUCATION, education);
         resume.setSections(sections);
 
-        System.out.println(resume.getFullName());
-
-        EnumMap<ContactType, String> contactsForPrint = resume.getContacts();
-        for (EnumMap.Entry<ContactType, String> entry : contactsForPrint.entrySet()) {
-            System.out.println(entry.getKey().getName() + ": " + entry.getValue());
-        }
-
-        EnumMap<SectionType, Section> sectionsForPrint = resume.getSections();
-        for (EnumMap.Entry<SectionType, Section> entry : sectionsForPrint.entrySet()) {
-            System.out.println(entry.getKey().getTitle() + ":");
-            System.out.println(entry.getValue());
-        }
+        return resume;
     }
 }
