@@ -5,10 +5,11 @@ import model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File>  {
+public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
 
     protected AbstractFileStorage(File directory) {
@@ -24,12 +25,22 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>  {
 
     @Override
     public void clear() {
-
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                files[i].delete();
+            }
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        File[] files = directory.listFiles();
+        if (files == null) {
+            return 0;
+        } else {
+            return files.length;
+        }
     }
 
     @Override
@@ -39,7 +50,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>  {
 
     @Override
     protected void doUpdate(Resume r, File file) {
-
+        try {
+            doWrite(r, file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
     }
 
     @Override
@@ -61,16 +76,45 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>  {
 
     @Override
     protected Resume doGet(File file) {
-        return null;
+        Resume resume = null;
+        try {
+            resume = doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+        return resume;
     }
+
+    protected abstract Resume doRead(File file) throws IOException;
 
     @Override
     protected void doDelete(File file) {
-
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].getName().equals(file.getName())) {
+                    files[i].delete();
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-        return null;
+        File[] files = directory.listFiles();
+        List<Resume> resumes = new ArrayList<>();
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                try {
+                    resumes.add(doRead(files[i]));
+                } catch (IOException e) {
+                    throw new StorageException("IO error", files[i].getName(), e);
+                }
+            }
+            return resumes;
+        } else {
+            return null;
+        }
     }
 }
