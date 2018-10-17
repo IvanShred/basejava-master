@@ -31,23 +31,22 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        recursionSearch("C:\\Users\\kukhtaIA\\IdeaProjects\\basejava\\src");
+        recursionSearch(".");
     }
 
     public static void recursionSearch(String path) {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         File file = new File(path);
         File[] files = file.listFiles();
         if (files != null) {
-            for (int i = 0; i < files.length; i++) {
-                if (files != null) {
-                    if (files[i].isDirectory()) {
-                        System.out.println(files[i].getAbsolutePath());
-                        recursionSearch(files[i].getPath());
-                    } else {
-                        for (File f : files) {
-                            System.out.println(f.getAbsolutePath());
-                        }
-                    }
+            for (File f : files) {
+                int stack = stackTraceElements.length;
+                for (int i = 2; i < stack; i++) {
+                    System.out.print("\t");
+                }
+                System.out.println(f.getName());
+                if (f.isDirectory()) {
+                    recursionSearch(f.getPath());
                 }
             }
         } else {
