@@ -3,7 +3,6 @@ package storage;
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
-//import model.ResumeTestData;
 import model.ResumeTestData;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,3 +1,5 @@
+import exception.DirectoryIsEmptyException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,22 +29,27 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        recursionSearch(".");
+        recursionSearch("C:\\Users\\kukhtaIA\\IdeaProjects\\basejava\\src");
     }
 
     public static void recursionSearch(String path) {
         File file = new File(path);
         File[] files = file.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            if (files != null) {
-                for (File f : files) {
-                    System.out.println(f.getName());
-                }
-                if (files[i].isDirectory()) {
-                    recursionSearch(files[i].getPath());
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                if (files != null) {
+                    if (files[i].isDirectory()) {
+                        System.out.println(files[i].getAbsolutePath());
+                        recursionSearch(files[i].getPath());
+                    } else {
+                        for (File f : files) {
+                            System.out.println(f.getAbsolutePath());
+                        }
+                    }
                 }
             }
+        } else {
+            throw new DirectoryIsEmptyException("directory " + file.getAbsolutePath() + " is empty");
         }
     }
 }
