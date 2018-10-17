@@ -1,9 +1,11 @@
 package storage;
 
-import exception.StorageException;
-import model.Resume;
 import org.junit.Assert;
 import org.junit.Test;
+import ru.javawebinar.basejava.exception.StorageException;
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.AbstractArrayStorage;
+import ru.javawebinar.basejava.storage.Storage;
 
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     protected AbstractArrayStorageTest(Storage storage) {
