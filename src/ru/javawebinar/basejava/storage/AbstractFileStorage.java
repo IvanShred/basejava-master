@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.DirectoryIsEmptyException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -38,7 +37,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public int size() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new DirectoryIsEmptyException("directory " + directory.getAbsolutePath() + " is empty");
+            throw new StorageException("directory is empty", directory.getAbsolutePath());
         } else {
             return files.length;
         }
@@ -78,8 +77,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            Resume resume = doRead(file);
-            return resume;
+            return doRead(file);
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -88,12 +86,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected abstract Resume doRead(File file) throws IOException;
 
     @Override
-    protected void doDelete(File file) {
+    protected void doDelete(File fileForDelete) {
         File[] files = directory.listFiles();
         if (files != null) {
-            for (File f : files) {
-                if (f.getName().equals(file.getName())) {
-                    f.delete();
+            for (File file : files) {
+                if (file.getName().equals(fileForDelete.getName())) {
+                    file.delete();
                 }
             }
         }
@@ -113,7 +111,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             }
             return resumes;
         } else {
-            throw new DirectoryIsEmptyException("directory " + directory.getAbsolutePath() + " is empty");
+            throw new StorageException("directory is empty", directory.getAbsolutePath());
         }
     }
 }

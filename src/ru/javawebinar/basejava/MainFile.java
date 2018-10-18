@@ -1,6 +1,6 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.exception.DirectoryIsEmptyException;
+import ru.javawebinar.basejava.exception.StorageException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,7 +50,7 @@ public class MainFile {
                 }
             }
         } else {
-            throw new DirectoryIsEmptyException("directory " + file.getAbsolutePath() + " is empty");
+            throw new StorageException("directory is empty", file.getAbsolutePath());
         }
     }
 }

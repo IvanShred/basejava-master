@@ -2,10 +2,10 @@ package storage;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.ResumeTestData;
 import ru.javawebinar.basejava.storage.Storage;
 
 import java.util.Arrays;
