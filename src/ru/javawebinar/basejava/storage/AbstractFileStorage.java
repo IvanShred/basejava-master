@@ -28,7 +28,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
-                file.delete();
+                doDelete(file);
             }
         }
     }
@@ -37,7 +37,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public int size() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("directory is empty", directory.getAbsolutePath());
+            throw new StorageException("directory is empty", null);
         } else {
             return files.length;
         }
@@ -86,14 +86,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected abstract Resume doRead(File file) throws IOException;
 
     @Override
-    protected void doDelete(File fileForDelete) {
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.getName().equals(fileForDelete.getName())) {
-                    file.delete();
-                }
-            }
+    protected void doDelete(File file) {
+        if (!file.delete()) {
+            throw new StorageException("File delete error", file.getName());
         }
     }
 
@@ -103,15 +98,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         List<Resume> resumes = new ArrayList<>();
         if (files != null) {
             for (File file : files) {
-                try {
-                    resumes.add(doRead(file));
-                } catch (IOException e) {
-                    throw new StorageException("IO error", file.getName(), e);
-                }
+                resumes.add(doGet(file));
             }
             return resumes;
         } else {
-            throw new StorageException("directory is empty", directory.getAbsolutePath());
+            throw new StorageException("directory is empty", null);
         }
     }
 }
