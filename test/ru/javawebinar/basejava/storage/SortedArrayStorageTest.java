@@ -1,6 +1,4 @@
-package storage;
-
-import ru.javawebinar.basejava.storage.SortedArrayStorage;
+package ru.javawebinar.basejava.storage;
 
 public class SortedArrayStorageTest extends AbstractArrayStorageTest {
 

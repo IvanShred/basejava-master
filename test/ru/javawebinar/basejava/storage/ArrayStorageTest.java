@@ -1,6 +1,4 @@
-package storage;
-
-import ru.javawebinar.basejava.storage.ArrayStorage;
+package ru.javawebinar.basejava.storage;
 
 public class ArrayStorageTest extends AbstractArrayStorageTest {
 
