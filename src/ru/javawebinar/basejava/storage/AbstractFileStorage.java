@@ -2,6 +2,8 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.strategy.Context;
+import ru.javawebinar.basejava.strategy.ObjectStreamStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
+    private Context context;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -52,8 +55,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doUpdate(Resume r, File file) {
+//        try {
+//            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+//        } catch (IOException e) {
+//            throw new StorageException("IO error", file.getName(), e);
+//        }
+        context.setStrategy(new ObjectStreamStrategy());
         try {
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            context.executeWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
