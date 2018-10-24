@@ -13,19 +13,11 @@ public class Context {
         this.strategy = strategy;
     }
 
-    public void executeWrite (Resume r, OutputStream os) {
-        try {
-            strategy.doWrite(r, os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void executeWrite(Resume r, OutputStream os) throws IOException {
+        strategy.doWrite(r, os);
     }
 
-    public void executeRead (InputStream is) {
-        try {
-            strategy.doRead(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public Resume executeRead(InputStream is) throws IOException {
+            return strategy.doRead(is);
     }
 }

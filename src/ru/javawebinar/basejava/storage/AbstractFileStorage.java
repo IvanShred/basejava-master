@@ -12,7 +12,6 @@ import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
-    private Context context;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -55,14 +54,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doUpdate(Resume r, File file) {
-//        try {
-//            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
-//        } catch (IOException e) {
-//            throw new StorageException("IO error", file.getName(), e);
-//        }
-        context.setStrategy(new ObjectStreamStrategy());
         try {
-            context.executeWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
