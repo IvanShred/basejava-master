@@ -1,27 +1,112 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.strategy.Context;
 import ru.javawebinar.basejava.strategy.ObjectStreamStrategy;
+import ru.javawebinar.basejava.strategy.Strategy;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-public class ObjectStreamStorage extends AbstractFileStorage {
-    private Context context = new Context();
+public class ObjectStreamStorage extends AbstractStorage<File> {
+    private File directory;
+    private Strategy strategy;
+
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
+    }
 
     protected ObjectStreamStorage(File directory) {
-        super(directory);
+        Objects.requireNonNull(directory, "directory must not be null");
+        if (!directory.isDirectory()) {
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
+        }
+        if (!directory.canRead() || !directory.canWrite()) {
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
+        }
+        this.directory = directory;
     }
 
     @Override
-    protected void doWrite(Resume r, OutputStream os) throws IOException {
-        context.setStrategy(new ObjectStreamStrategy());
-        context.executeWrite(r, os);
+    public void clear() {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                doDelete(file);
+            }
+        }
     }
 
     @Override
-    protected Resume doRead(InputStream is) throws IOException {
-        context.setStrategy(new ObjectStreamStrategy());
-        return context.executeRead(is);
+    public int size() {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("directory is empty", null);
+        } else {
+            return files.length;
+        }
+    }
+
+    @Override
+    protected File getSearchKey(String uuid) {
+        return new File(directory, uuid);
+    }
+
+    @Override
+    protected void doUpdate(Resume r, File file) {
+        try {
+            setStrategy(new ObjectStreamStrategy());
+            strategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+    }
+
+    @Override
+    protected boolean isExist(File file) {
+        return file.exists();
+    }
+
+    @Override
+    protected void doSave(Resume r, File file) {
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+        doUpdate(r, file);
+    }
+
+    @Override
+    protected Resume doGet(File file) {
+        try {
+            setStrategy(new ObjectStreamStrategy());
+            return strategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+    }
+
+    @Override
+    protected void doDelete(File file) {
+        if (!file.delete()) {
+            throw new StorageException("File delete error", file.getName());
+        }
+    }
+
+    @Override
+    protected List<Resume> doCopyAll() {
+        File[] files = directory.listFiles();
+        List<Resume> resumes = new ArrayList<>();
+        if (files != null) {
+            for (File file : files) {
+                resumes.add(doGet(file));
+            }
+            return resumes;
+        } else {
+            throw new StorageException("directory is empty", null);
+        }
     }
 }
