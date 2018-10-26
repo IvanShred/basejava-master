@@ -2,7 +2,6 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.serializer.ObjectStreamStreamSerializer;
 import ru.javawebinar.basejava.storage.serializer.StreamSerializer;
 
 import java.io.*;
