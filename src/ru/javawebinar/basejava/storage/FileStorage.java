@@ -2,24 +2,21 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.strategy.ObjectStreamStrategy;
-import ru.javawebinar.basejava.storage.strategy.Strategy;
+import ru.javawebinar.basejava.storage.serializer.ObjectStreamStreamSerializer;
+import ru.javawebinar.basejava.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ObjectStreamStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
     private File directory;
-    private Strategy strategy;
+    private StreamSerializer streamSerializer;
 
-    public void setStrategy(Strategy strategy) {
-        this.strategy = strategy;
-    }
-
-    protected ObjectStreamStorage(File directory) {
+    protected FileStorage(File directory, StreamSerializer streamSerializer) {
         Objects.requireNonNull(directory, "directory must not be null");
+        this.streamSerializer = streamSerializer;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
@@ -43,7 +40,7 @@ public class ObjectStreamStorage extends AbstractStorage<File> {
     public int size() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("directory is empty", null);
+            throw new StorageException("directory is empty");
         } else {
             return files.length;
         }
@@ -57,8 +54,7 @@ public class ObjectStreamStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume r, File file) {
         try {
-            setStrategy(new ObjectStreamStrategy());
-            strategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            streamSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -82,8 +78,7 @@ public class ObjectStreamStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            setStrategy(new ObjectStreamStrategy());
-            return strategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return streamSerializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -106,7 +101,7 @@ public class ObjectStreamStorage extends AbstractStorage<File> {
             }
             return resumes;
         } else {
-            throw new StorageException("directory is empty", null);
+            throw new StorageException("directory is empty");
         }
     }
 }
