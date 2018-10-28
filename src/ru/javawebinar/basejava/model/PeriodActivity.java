@@ -1,16 +1,27 @@
 package ru.javawebinar.basejava.model;
 
+import ru.javawebinar.basejava.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PeriodActivity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final LocalDate dateBegin;
-    private final LocalDate dateEnd;
-    private final String position;
-    private final String description;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate dateBegin;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate dateEnd;
+    private String position;
+    private String description;
+
+    public PeriodActivity() {
+    }
 
     public PeriodActivity(LocalDate dateBegin, LocalDate dateEnd, String position, String description) {
         Objects.requireNonNull(dateBegin, "dateBegin must not be null");
