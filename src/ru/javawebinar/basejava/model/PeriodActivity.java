@@ -32,6 +32,22 @@ public class PeriodActivity implements Serializable {
         this.description = description;
     }
 
+    public LocalDate getDateBegin() {
+        return dateBegin;
+    }
+
+    public LocalDate getDateEnd() {
+        return dateEnd;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
