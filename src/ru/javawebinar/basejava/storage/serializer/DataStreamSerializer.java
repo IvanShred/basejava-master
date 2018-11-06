@@ -27,44 +27,42 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
-            }
+            writeCollection(dos, contacts.entrySet(), cont -> {
+                dos.writeUTF(cont.getKey().name());
+                dos.writeUTF(cont.getValue());
+            });
             Map<SectionType, Section> sections = resume.getSections();
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                switch (entry.getKey()) {
+            writeCollection(dos, sections.entrySet(), sect -> {
+                dos.writeUTF(sect.getKey().name());
+                switch (sect.getKey()) {
                     case PERSONAL:
                     case OBJECTIVE:
-                        dos.writeUTF(((TextSection) entry.getValue()).getText());
+                        dos.writeUTF(((TextSection) sect.getValue()).getText());
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        writeCollection(dos, ((ListSection) entry.getValue()).getItems(), dos::writeUTF);
+                        writeCollection(dos, ((ListSection) sect.getValue()).getItems(), dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        writeCollection(dos, ((OrganizationSection) entry.getValue()).getOrganizations(), x -> {
-                            Link link = x.getHomePage();
+                        writeCollection(dos, ((OrganizationSection) sect.getValue()).getOrganizations(), org -> {
+                            Link link = org.getHomePage();
                             dos.writeUTF(link.getName());
                             dos.writeUTF(link.getUrl());
-                            writeCollection(dos, x.getPeriods(), y -> {
-                                dos.writeInt(y.getDateBegin().getYear());
-                                dos.writeInt(y.getDateBegin().getMonthValue());
-                                dos.writeInt(y.getDateBegin().getDayOfMonth());
-                                dos.writeInt(y.getDateEnd().getYear());
-                                dos.writeInt(y.getDateEnd().getMonthValue());
-                                dos.writeInt(y.getDateEnd().getDayOfMonth());
-                                dos.writeUTF(y.getPosition());
-                                dos.writeUTF(y.getDescription());
+                            writeCollection(dos, org.getPeriods(), per -> {
+                                dos.writeInt(per.getDateBegin().getYear());
+                                dos.writeInt(per.getDateBegin().getMonthValue());
+                                dos.writeInt(per.getDateBegin().getDayOfMonth());
+                                dos.writeInt(per.getDateEnd().getYear());
+                                dos.writeInt(per.getDateEnd().getMonthValue());
+                                dos.writeInt(per.getDateEnd().getDayOfMonth());
+                                dos.writeUTF(per.getPosition());
+                                dos.writeUTF(per.getDescription());
                             });
                         });
                         break;
                 }
-            }
+            });
         }
     }
 
@@ -74,12 +72,8 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            int sizeSections = dis.readInt();
-            for (int i = 0; i < sizeSections; i++) {
+            readCollection(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readCollection(dis, () -> {
                 SectionType sectionType = (SectionType.valueOf(dis.readUTF()));
                 switch (sectionType) {
                     case PERSONAL:
@@ -116,7 +110,7 @@ public class DataStreamSerializer implements StreamSerializer {
                         resume.addSection(sectionType, new OrganizationSection(organizations));
                         break;
                 }
-            }
+            });
             return resume;
         }
     }
@@ -128,7 +122,7 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    public void readCollection(DataInputStream dis, Reader reader) throws IOException{
+    public void readCollection(DataInputStream dis, Reader reader) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
             reader.read();
