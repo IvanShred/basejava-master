@@ -11,12 +11,10 @@ import java.util.Map;
 
 public class DataStreamSerializer implements StreamSerializer {
 
-    @FunctionalInterface
     private interface Writer<T> {
         void write(T t) throws IOException;
     }
 
-    @FunctionalInterface
     private interface Reader {
         void read() throws IOException;
     }
