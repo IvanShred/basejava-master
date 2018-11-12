@@ -7,11 +7,12 @@ public class MainConcurrency {
     public static final int THREADS_NUMBER = 10000;
     private int counter;
     private static final Object LOCK = new Object();
+    private static final Object LOCK1 = new Object();
 
     public static void main(String[] args) throws InterruptedException {
-        System.out.println(Thread.currentThread().getName());
+        System.out.println(java.lang.Thread.currentThread().getName());
 
-        Thread thread0 = new Thread() {
+        java.lang.Thread thread0 = new java.lang.Thread() {
             @Override
             public void run() {
                 System.out.println(getName() + ", " + getState());
@@ -20,11 +21,11 @@ public class MainConcurrency {
         };
         thread0.start();
 
-        new Thread(new Runnable() {
+        new java.lang.Thread(new Runnable() {
 
             @Override
             public void run() {
-                System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
+                System.out.println(java.lang.Thread.currentThread().getName() + ", " + java.lang.Thread.currentThread().getState());
             }
 
             private void inc() {
@@ -38,10 +39,10 @@ public class MainConcurrency {
         System.out.println(thread0.getState());
 
         final MainConcurrency mainConcurrency = new MainConcurrency();
-        List<Thread> threads = new ArrayList<>(THREADS_NUMBER);
+        List<java.lang.Thread> threads = new ArrayList<>(THREADS_NUMBER);
 
         for (int i = 0; i < THREADS_NUMBER; i++) {
-            Thread thread = new Thread(() -> {
+            java.lang.Thread thread = new java.lang.Thread(() -> {
                 for (int j = 0; j < 100; j++) {
                     mainConcurrency.inc();
                 }
@@ -58,6 +59,11 @@ public class MainConcurrency {
             }
         });
         System.out.println(mainConcurrency.counter);
+
+        Thread thread = new Thread();
+        Thread1 thread1 = new Thread1();
+        thread.start();
+        thread1.start();
     }
 
     private synchronized void inc() {
@@ -69,4 +75,35 @@ public class MainConcurrency {
 //                ...
 //        }
     }
+
+    private static class Thread extends java.lang.Thread {
+        public void run() {
+            synchronized (LOCK) {
+                try {
+                    java.lang.Thread.sleep(100);
+                } catch (InterruptedException e) {
+                }
+                System.out.println("thread");
+                synchronized (LOCK1) {
+                    System.out.println("never print");
+                }
+            }
+        }
+    }
+
+    private static class Thread1 extends java.lang.Thread {
+        public void run() {
+            synchronized (LOCK1) {
+                try {
+                    java.lang.Thread.sleep(100);
+                } catch (InterruptedException e) {
+                }
+                System.out.println("thread2");
+                synchronized (LOCK) {
+                    System.out.println("never print");
+                }
+            }
+        }
+    }
+
 }
