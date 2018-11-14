@@ -48,14 +48,14 @@ public class ResumeTestData {
         Section experience = new OrganizationSection(listExperience);
 
         List<PeriodActivity> periodsForEducation = new ArrayList<>();
-        PeriodActivity period3 = new PeriodActivity(DateUtil.of(2010, Month.JANUARY), DateUtil.of(2012, Month.JANUARY), null, "Курс1");
-        PeriodActivity period4 = new PeriodActivity(DateUtil.of(2012, Month.JANUARY), DateUtil.of(2013, Month.JANUARY), null, "Курс2");
+        PeriodActivity period3 = new PeriodActivity(DateUtil.of(2010, Month.JANUARY), DateUtil.of(2012, Month.JANUARY), "Позиция1", null);
+        PeriodActivity period4 = new PeriodActivity(DateUtil.of(2012, Month.JANUARY), DateUtil.of(2013, Month.JANUARY), "Позиция2", null);
         periodsForEducation.add(period3);
         periodsForEducation.add(period4);
         Organization organizationForEducation = new Organization("SMP", "www.site3.ru", periodsForEducation);
 
         List<PeriodActivity> periodsForEducation2 = new ArrayList<>();
-        PeriodActivity period5 = new PeriodActivity(DateUtil.of(2010, Month.JANUARY), DateUtil.of(2012, Month.JANUARY), null, "Курс3");
+        PeriodActivity period5 = new PeriodActivity(DateUtil.of(2010, Month.JANUARY), DateUtil.of(2012, Month.JANUARY), "Позиция3", null);
         periodsForEducation2.add(period5);
         Organization organizationForEducation2 = new Organization("SGC", "www.site4.ru", periodsForEducation2);
 

@@ -4,20 +4,9 @@ import ru.javawebinar.basejava.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataStreamSerializer implements StreamSerializer {
-
-    private interface Writer<T> {
-        void write(T t) throws IOException;
-    }
-
-    private interface Reader {
-        void read() throws IOException;
-    }
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
@@ -48,12 +37,8 @@ public class DataStreamSerializer implements StreamSerializer {
                             dos.writeUTF(link.getName());
                             dos.writeUTF(link.getUrl());
                             writeCollection(dos, org.getPeriods(), per -> {
-                                dos.writeInt(per.getDateBegin().getYear());
-                                dos.writeInt(per.getDateBegin().getMonthValue());
-                                dos.writeInt(per.getDateBegin().getDayOfMonth());
-                                dos.writeInt(per.getDateEnd().getYear());
-                                dos.writeInt(per.getDateEnd().getMonthValue());
-                                dos.writeInt(per.getDateEnd().getDayOfMonth());
+                                writeDate(dos, per.getDateBegin());
+                                writeDate(dos, per.getDateEnd());
                                 dos.writeUTF(per.getPosition());
                                 dos.writeUTF(per.getDescription());
                             });
@@ -93,15 +78,11 @@ public class DataStreamSerializer implements StreamSerializer {
                             String url = dis.readUTF();
                             List<PeriodActivity> periods = new ArrayList<>();
                             readCollection(dis, () -> {
-                                int dateBeginYear = dis.readInt();
-                                int dateBeginMonth = dis.readInt();
-                                int dateBeginDay = dis.readInt();
-                                int dateEndYear = dis.readInt();
-                                int dateEndMonth = dis.readInt();
-                                int dateEndDay = dis.readInt();
+                                LocalDate dateBegin = readDate(dis);
+                                LocalDate dateEnd = readDate(dis);
                                 String position = dis.readUTF();
                                 String description = dis.readUTF();
-                                periods.add(new PeriodActivity(LocalDate.of(dateBeginYear, dateBeginMonth, dateBeginDay), LocalDate.of(dateEndYear, dateEndMonth, dateEndDay), position, description));
+                                periods.add(new PeriodActivity(dateBegin, dateEnd, position, description));
                             });
                             organizations.add(new Organization(name, url, periods));
                         });
@@ -113,17 +94,40 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    public <T> void writeCollection(DataOutputStream dos, Collection<T> collection, Writer<T> writer) throws IOException {
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, Writer<T> writer) throws IOException {
         dos.writeInt(collection.size());
         for (T element : collection) {
             writer.write(element);
         }
     }
 
-    public void readCollection(DataInputStream dis, Reader reader) throws IOException {
+    private void readCollection(DataInputStream dis, Reader reader) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
             reader.read();
         }
     }
+
+    private void writeDate(DataOutputStream dos, LocalDate date) throws IOException{
+        dos.writeInt(date.getYear());
+        dos.writeInt(date.getMonthValue());
+        dos.writeInt(date.getDayOfMonth());
+    }
+
+    private LocalDate readDate(DataInputStream dis) throws IOException{
+        int dateYear = dis.readInt();
+        int dateMonth = dis.readInt();
+        int dateDay = dis.readInt();
+        return LocalDate.of(dateYear, dateMonth, dateDay);
+    }
+
+
+    private interface Writer<T> {
+        void write(T t) throws IOException;
+    }
+
+    private interface Reader {
+        void read() throws IOException;
+    }
+
 }

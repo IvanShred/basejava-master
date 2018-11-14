@@ -28,8 +28,8 @@ public class PeriodActivity implements Serializable {
         Objects.requireNonNull(dateEnd, "dateEnd must not be null");
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
-        this.position = position == null ? "" : position;
-        this.description = description;
+        this.position = position;
+        this.description = description == null ? "" : description;
     }
 
     public LocalDate getDateBegin() {

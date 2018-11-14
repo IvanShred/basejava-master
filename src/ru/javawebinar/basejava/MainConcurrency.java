@@ -60,10 +60,23 @@ public class MainConcurrency {
         });
         System.out.println(mainConcurrency.counter);
 
-        Thread thread = new Thread();
-        Thread1 thread1 = new Thread1();
-        thread.start();
-        thread1.start();
+        Thread firstThread = new Thread(() -> MainConcurrency.makeDeadlock(LOCK, LOCK1));
+        Thread secondThread = new Thread(() -> MainConcurrency.makeDeadlock(LOCK1, LOCK));
+        firstThread.start();
+        secondThread.start();
+    }
+
+    public static void makeDeadlock(Object lock, Object lock1) {
+        synchronized (lock) {
+            try {
+                java.lang.Thread.sleep(100);
+            } catch (InterruptedException e) {
+            }
+            System.out.println(lock);
+            synchronized (lock1) {
+                System.out.println("never print");
+            }
+        }
     }
 
     private synchronized void inc() {
@@ -74,36 +87,6 @@ public class MainConcurrency {
 //                readFile
 //                ...
 //        }
-    }
-
-    private static class Thread extends java.lang.Thread {
-        public void run() {
-            synchronized (LOCK) {
-                try {
-                    java.lang.Thread.sleep(100);
-                } catch (InterruptedException e) {
-                }
-                System.out.println("thread");
-                synchronized (LOCK1) {
-                    System.out.println("never print");
-                }
-            }
-        }
-    }
-
-    private static class Thread1 extends java.lang.Thread {
-        public void run() {
-            synchronized (LOCK1) {
-                try {
-                    java.lang.Thread.sleep(100);
-                } catch (InterruptedException e) {
-                }
-                System.out.println("thread2");
-                synchronized (LOCK) {
-                    System.out.println("never print");
-                }
-            }
-        }
     }
 
 }
