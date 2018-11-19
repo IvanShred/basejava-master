@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class mainStreams {
-    private static int result = 0;
 
     public static void main(String[] args) {
         int[] arrays = {1, 2, 3, 3, 2, 3};
@@ -23,25 +22,18 @@ public class mainStreams {
     }
 
     private static int minValue(int[] values) {
-        Arrays.stream(values)
+        return Arrays.stream(values)
                 .distinct()
                 .sorted()
-                .forEachOrdered((x) -> changeResult(x));
-        return result / 10;
+                .reduce((x1, x2) -> x1 * 10 + x2).orElse(0);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        if (integers.stream()
+        int summ = integers.stream()
                 .reduce((x1, x2) -> x1 + x2)
-                .orElse(0) % 2 == 0) {
-            return integers.stream().filter(x -> x % 2 != 0).collect(Collectors.toList());
-        } else {
-            return integers.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
-        }
-    }
-
-    private static int changeResult(int x) {
-        result = (x + result) * 10;
-        return result;
+                .orElse(0);
+        return integers.stream().
+                filter(summ % 2 == 0 ? x -> x % 2 != 0 : x -> x % 2 == 0)
+                .collect(Collectors.toList());
     }
 }
