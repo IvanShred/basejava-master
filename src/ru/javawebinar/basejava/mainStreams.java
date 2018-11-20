@@ -32,8 +32,8 @@ public class mainStreams {
         int summ = integers.stream()
                 .reduce((x1, x2) -> x1 + x2)
                 .orElse(0);
-        return integers.stream().
-                filter(summ % 2 == 0 ? x -> x % 2 != 0 : x -> x % 2 == 0)
+        return integers.stream()
+                .filter(x -> x % 2 != summ % 2)
                 .collect(Collectors.toList());
     }
 }
