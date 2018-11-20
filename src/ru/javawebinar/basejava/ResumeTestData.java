@@ -12,7 +12,7 @@ public class ResumeTestData {
     public static Resume getTestResume() {
         Resume resume = new Resume("uuid1", "Name1");
 
-        EnumMap<ContactType, String> contacts = resume.getContacts();
+        /*EnumMap<ContactType, String> contacts = resume.getContacts();
         contacts.put(ContactType.PHONE, "+79999999999");
         contacts.put(ContactType.EMAIL, "tratata@mail.ru");
         contacts.put(ContactType.GITHUB, "https://github.com/IvanIvanov?tab=repositories");
@@ -72,7 +72,7 @@ public class ResumeTestData {
         sections.put(SectionType.QUALIFICATIONS, qualifications);
         sections.put(SectionType.EXPERIENCE, experience);
         sections.put(SectionType.EDUCATION, education);
-        resume.setSections(sections);
+        resume.setSections(sections);*/
 
         return resume;
     }
