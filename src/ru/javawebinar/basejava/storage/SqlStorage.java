@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.ConnectionFactory;
+import ru.javawebinar.basejava.util.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,21 +25,35 @@ public class SqlStorage implements Storage {
         } catch (SQLException e) {
             throw new StorageException(e);
         }
+        //new SqlHelper<>().runSqlCommand(connectionFactory, "DELETE FROM resume", ps -> ps.execute());
     }
 
     @Override
     public Resume get(String uuid) {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid =?")) {
-            ps.setString(1, uuid);
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new NotExistStorageException(uuid);
-            }
-            return new Resume(uuid, rs.getString("full_name"));
+//        try (Connection conn = connectionFactory.getConnection();
+//             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid =?")) {
+//            ps.setString(1, uuid);
+//            ResultSet rs = ps.executeQuery();
+//            if (!rs.next()) {
+//                throw new NotExistStorageException(uuid);
+//            }
+//            return new Resume(uuid, rs.getString("full_name"));
+//        } catch (SQLException e) {
+//            throw new StorageException(e);
+//        }
+        try {
+            return new SqlHelper<Resume>().runSqlCommand(connectionFactory, "SELECT * FROM resume r WHERE r.uuid =?", ps -> {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                if (!rs.next()) {
+                    throw new NotExistStorageException(uuid);
+                }
+                return new Resume(uuid, rs.getString("full_name"));
+            });
         } catch (SQLException e) {
-            throw new StorageException(e);
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override
