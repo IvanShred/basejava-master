@@ -7,10 +7,11 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.UUID;
 
 public class ResumeTestData {
     public static Resume getTestResume() {
-        Resume resume = new Resume("uuid1", "Name1");
+        Resume resume = new Resume(UUID.randomUUID().toString(), "Name1");
 
         /*EnumMap<ContactType, String> contacts = resume.getContacts();
         contacts.put(ContactType.PHONE, "+79999999999");
