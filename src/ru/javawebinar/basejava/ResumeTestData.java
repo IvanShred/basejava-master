@@ -13,14 +13,14 @@ public class ResumeTestData {
     public static Resume getTestResume() {
         Resume resume = new Resume(UUID.randomUUID().toString(), "Name1");
 
-        /*EnumMap<ContactType, String> contacts = resume.getContacts();
+        EnumMap<ContactType, String> contacts = resume.getContacts();
         contacts.put(ContactType.PHONE, "+79999999999");
         contacts.put(ContactType.EMAIL, "tratata@mail.ru");
         contacts.put(ContactType.GITHUB, "https://github.com/IvanIvanov?tab=repositories");
         contacts.put(ContactType.SKYPE, "IvanIvanov");
         resume.setContacts(contacts);
 
-        Section personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
+        /*Section personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
         Section objective = new TextSection("Разработчик");
 
         List<String> listAchievement = new ArrayList<>();
