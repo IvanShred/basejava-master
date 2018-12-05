@@ -7,6 +7,7 @@ import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,12 +38,11 @@ public class SqlStorage implements Storage {
                     }
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        if (rs.getString("type") == null) {
-                            break;
+                        if (rs.getString("type") != null) {
+                            String value = rs.getString("value");
+                            ContactType type = ContactType.valueOf(rs.getString("type"));
+                            r.addContact(type, value);
                         }
-                        String value = rs.getString("value");
-                        ContactType type = ContactType.valueOf(rs.getString("type"));
-                        r.addContact(type, value);
                     } while (rs.next());
                     return r;
                 });
@@ -75,8 +75,8 @@ public class SqlStorage implements Storage {
                         ps.setString(2, r.getFullName());
                         ps.execute();
                     }
-            insertContacts(r, conn);
-            return null;
+                    insertContacts(r, conn);
+                    return null;
                 }
         );
     }
@@ -94,25 +94,21 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>();
+        Map<String, Resume> map = new HashMap<>();
         return sqlHelper.transactionalExecute(conn -> {
                     try (PreparedStatement ps = conn.prepareStatement("SELECT RTRIM(uuid) as \"uuid\", full_name FROM resume ORDER BY full_name, uuid")) {
                         ResultSet rs = ps.executeQuery();
                         while (rs.next()) {
-                            resumes.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+                            map.put(rs.getString("uuid"), new Resume(rs.getString("uuid"), rs.getString("full_name")));
                         }
                     }
                     try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact ORDER BY resume_uuid")) {
                         ResultSet rs = ps.executeQuery();
                         while (rs.next()) {
-                            for (Resume resume : resumes) {
-                                if (resume.getUuid().equals(rs.getString("resume_uuid"))){
-                                    resume.addContact(ContactType.valueOf(rs.getString("type")), rs.getString("value"));
-                                }
-                            }
+                            map.get(rs.getString("resume_uuid")).addContact(ContactType.valueOf(rs.getString("type")), rs.getString("value"));
                         }
                     }
-                    return resumes;
+                    return new ArrayList<>(map.values());
                 }
         );
     }
