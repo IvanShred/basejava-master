@@ -6,10 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
@@ -38,9 +35,10 @@ public class SqlStorage implements Storage {
                     }
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        if (rs.getString("type") != null) {
+                        String typeContact = rs.getString("type");
+                        if (typeContact != null) {
                             String value = rs.getString("value");
-                            ContactType type = ContactType.valueOf(rs.getString("type"));
+                            ContactType type = ContactType.valueOf(typeContact);
                             r.addContact(type, value);
                         }
                     } while (rs.next());
@@ -94,7 +92,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        Map<String, Resume> map = new HashMap<>();
+        Map<String, Resume> map = new LinkedHashMap<>();
         return sqlHelper.transactionalExecute(conn -> {
                     try (PreparedStatement ps = conn.prepareStatement("SELECT RTRIM(uuid) as \"uuid\", full_name FROM resume ORDER BY full_name, uuid")) {
                         ResultSet rs = ps.executeQuery();
