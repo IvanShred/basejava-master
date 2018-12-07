@@ -44,20 +44,8 @@ public class SqlStorage implements Storage {
                         }
                         String typeSection = rs.getString("type_section");
                         if (typeSection != null) {
-                            String valueSection = rs.getString("value_section");
                             SectionType type = SectionType.valueOf(typeSection);
-                            Section section = null;
-                            switch (type) {
-                                case PERSONAL:
-                                case OBJECTIVE:
-                                    section = new TextSection(valueSection);
-                                    break;
-                                case ACHIEVEMENT:
-                                case QUALIFICATIONS:
-                                    String[] array = valueSection.split("\n");
-                                    section = new ListSection(Arrays.asList(array));
-                                    break;
-                            }
+                            Section section = getSection(rs.getString("value_section"), type);
                             r.addSection(type, section);
                         }
                     } while (rs.next());
@@ -131,6 +119,14 @@ public class SqlStorage implements Storage {
                             map.get(rs.getString("resume_uuid")).addContact(ContactType.valueOf(rs.getString("type")), rs.getString("value"));
                         }
                     }
+                    try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section ORDER BY resume_uuid")) {
+                        ResultSet rs = ps.executeQuery();
+                        while (rs.next()) {
+                            SectionType type = SectionType.valueOf(rs.getString("type_section"));
+                            Section section = getSection(rs.getString("value_section"), type);
+                            map.get(rs.getString("resume_uuid")).addSection(type, section);
+                        }
+                    }
                     return new ArrayList<>(map.values());
                 }
         );
@@ -182,5 +178,20 @@ public class SqlStorage implements Storage {
             }
             ps.executeBatch();
         }
+    }
+
+    private Section getSection(String valueSection, SectionType type) {
+        Section section = null;
+        switch (type) {
+            case PERSONAL:
+            case OBJECTIVE:
+                section = new TextSection(valueSection);
+                break;
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                section = new ListSection(Arrays.asList(valueSection.split("\n")));
+                break;
+        }
+        return section;
     }
 }
