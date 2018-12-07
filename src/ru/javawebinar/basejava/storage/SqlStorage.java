@@ -86,6 +86,7 @@ public class SqlStorage implements Storage {
             if (ps.executeUpdate() == 0) {
                 throw new NotExistStorageException(uuid);
             }
+            ps.execute();
             return null;
         });
     }
