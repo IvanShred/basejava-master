@@ -1,8 +1,7 @@
 package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
@@ -26,6 +25,8 @@ public class SqlStorage implements Storage {
                         "    SELECT * FROM resume r " +
                         " LEFT JOIN contact c " +
                         "        ON r.uuid = c.resume_uuid " +
+                        " LEFT JOIN section s " +
+                        "        ON r.uuid = s.resume_uuid " +
                         "     WHERE r.uuid =? ",
                 ps -> {
                     ps.setString(1, uuid);
@@ -40,6 +41,24 @@ public class SqlStorage implements Storage {
                             String value = rs.getString("value");
                             ContactType type = ContactType.valueOf(typeContact);
                             r.addContact(type, value);
+                        }
+                        String typeSection = rs.getString("type_section");
+                        if (typeSection != null) {
+                            String valueSection = rs.getString("value_section");
+                            SectionType type = SectionType.valueOf(typeSection);
+                            Section section = null;
+                            switch (type) {
+                                case PERSONAL:
+                                case OBJECTIVE:
+                                    section = new TextSection(valueSection);
+                                    break;
+                                case ACHIEVEMENT:
+                                case QUALIFICATIONS:
+                                    String[] array = valueSection.split("\n");
+                                    section = new ListSection(Arrays.asList(array));
+                                    break;
+                            }
+                            r.addSection(type, section);
                         }
                     } while (rs.next());
                     return r;
@@ -61,6 +80,11 @@ public class SqlStorage implements Storage {
                 ps.execute();
             }
             insertContacts(r, conn);
+            try (PreparedStatement ps = conn.prepareStatement("DELETE FROM section WHERE resume_uuid = ?")) {
+                ps.setString(1, r.getUuid());
+                ps.execute();
+            }
+            insertSections(r, conn);
             return null;
         });
     }
@@ -74,6 +98,7 @@ public class SqlStorage implements Storage {
                         ps.execute();
                     }
                     insertContacts(r, conn);
+                    insertSections(r, conn);
                     return null;
                 }
         );
@@ -125,6 +150,34 @@ public class SqlStorage implements Storage {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
                 ps.setString(3, e.getValue());
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        }
+    }
+
+    private void insertSections(Resume r, Connection conn) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, type_section, value_section) VALUES (?,?,?)")) {
+            for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
+                ps.setString(1, r.getUuid());
+                SectionType sectionType = e.getKey();
+                ps.setString(2, sectionType.name());
+                switch (sectionType) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        ps.setString(3, ((TextSection) e.getValue()).getText());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        List<String> list = ((ListSection) e.getValue()).getItems();
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < list.size() - 1; i++) {
+                            sb.append(list.get(i)).append("\n");
+                        }
+                        sb.append(list.get(list.size() - 1));
+                        ps.setString(3, (sb.toString()));
+                        break;
+                }
                 ps.addBatch();
             }
             ps.executeBatch();
