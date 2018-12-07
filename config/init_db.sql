@@ -31,4 +31,24 @@ create unique index if not exists contact_uuid_type_index
 	on contact (resume_uuid, type)
 ;
 
+create table section
+(
+	id_section serial not null
+		constraint section_pkey
+			primary key,
+	resume_uuid char(36) not null
+		constraint section_resume_uuid_fk
+			references resume
+				on delete cascade,
+	type_section text not null,
+	value_section text not null
+)
+;
+
+alter table section owner to postgres
+;
+
+create unique index if not exists section_uuid_type_index
+	on section (resume_uuid, type_section)
+;
 
