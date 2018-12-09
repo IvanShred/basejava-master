@@ -14,10 +14,16 @@ import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
-    private static final String DATABASE_URL = Config.get().getUrl();
-    private static final String DATABASE_USER = Config.get().getUser();
-    private static final String DATABASE_PASSWORD = Config.get().getPassword();
-    private static final SqlStorage SQL_STORAGE = new SqlStorage(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
+    private static SqlStorage SQL_STORAGE;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        String databaseUrl = Config.get().getUrl();
+        String databaseUser = Config.get().getUser();
+        String databasePassword = Config.get().getPassword();
+        SQL_STORAGE = new SqlStorage(databaseUrl, databaseUser, databasePassword);
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
