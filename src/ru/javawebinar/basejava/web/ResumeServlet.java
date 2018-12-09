@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.web;
 
+import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.SqlStorage;
 
@@ -12,6 +13,12 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
+    private static final String JDBC_DRIVER = "org.postgresql.Driver";
+    private static final String DATABASE_URL = Config.get().getUrl();
+    private static final String DATABASE_USER = Config.get().getUser();
+    private static final String DATABASE_PASSWORD = Config.get().getPassword();
+    private static final SqlStorage SQL_STORAGE = new SqlStorage(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -34,15 +41,19 @@ public class ResumeServlet extends HttpServlet {
         writer.write("<td>uuid</td>");
         writer.write("<td>full_name</td>");
         writer.write("</tr>");
-        List<Resume> resumes = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "postgres").getAllSorted();
-        for (Resume resume : resumes) {
-            writer.write("<tr>");
-            writer.write("<td>" + resume.getUuid() + "</td>");
-            writer.write("<td>" + resume.getFullName() + "</td>");
-            writer.write("</tr>");
+        try {
+            Class.forName(JDBC_DRIVER);
+            List<Resume> resumes = SQL_STORAGE.getAllSorted();
+            for (Resume resume : resumes) {
+                writer.write("<tr>");
+                writer.write("<td>" + resume.getUuid() + "</td>");
+                writer.write("<td>" + resume.getFullName() + "</td>");
+                writer.write("</tr>");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         writer.write("</table>");
         writer.write("</body>");
-
     }
 }
