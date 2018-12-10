@@ -1,19 +1,14 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
-import ru.javawebinar.basejava.util.DateUtil;
 
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ResumeTestData {
     public static Resume getTestResume() {
         Resume resume = new Resume(UUID.randomUUID().toString(), "Name1");
 
-        EnumMap<ContactType, String> contacts = resume.getContacts();
+        Map<ContactType, String> contacts = resume.getContacts();
         contacts.put(ContactType.PHONE, "+79999999999");
         contacts.put(ContactType.EMAIL, "tratata@mail.ru");
         contacts.put(ContactType.GITHUB, "https://github.com/IvanIvanov?tab=repositories");

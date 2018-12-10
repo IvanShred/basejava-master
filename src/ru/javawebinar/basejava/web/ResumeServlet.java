@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
-    private static SqlStorage SQL_STORAGE;
+    private static SqlStorage sqlStorage;
 
     @Override
     public void init() throws ServletException {
@@ -22,7 +22,7 @@ public class ResumeServlet extends HttpServlet {
         String databaseUrl = Config.get().getUrl();
         String databaseUser = Config.get().getUser();
         String databasePassword = Config.get().getPassword();
-        SQL_STORAGE = new SqlStorage(databaseUrl, databaseUser, databasePassword);
+        sqlStorage = new SqlStorage(databaseUrl, databaseUser, databasePassword);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -49,7 +49,7 @@ public class ResumeServlet extends HttpServlet {
         writer.write("</tr>");
         try {
             Class.forName(JDBC_DRIVER);
-            List<Resume> resumes = SQL_STORAGE.getAllSorted();
+            List<Resume> resumes = sqlStorage.getAllSorted();
             for (Resume resume : resumes) {
                 writer.write("<tr>");
                 writer.write("<td>" + resume.getUuid() + "</td>");
