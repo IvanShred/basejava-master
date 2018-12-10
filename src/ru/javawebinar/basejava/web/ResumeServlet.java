@@ -13,7 +13,6 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
-    private static final String JDBC_DRIVER = "org.postgresql.Driver";
     private static SqlStorage sqlStorage;
 
     @Override
@@ -47,17 +46,12 @@ public class ResumeServlet extends HttpServlet {
         writer.write("<td>uuid</td>");
         writer.write("<td>full_name</td>");
         writer.write("</tr>");
-        try {
-            Class.forName(JDBC_DRIVER);
-            List<Resume> resumes = sqlStorage.getAllSorted();
-            for (Resume resume : resumes) {
-                writer.write("<tr>");
-                writer.write("<td>" + resume.getUuid() + "</td>");
-                writer.write("<td>" + resume.getFullName() + "</td>");
-                writer.write("</tr>");
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        List<Resume> resumes = sqlStorage.getAllSorted();
+        for (Resume resume : resumes) {
+            writer.write("<tr>");
+            writer.write("<td>" + resume.getUuid() + "</td>");
+            writer.write("<td>" + resume.getFullName() + "</td>");
+            writer.write("</tr>");
         }
         writer.write("</table>");
         writer.write("</body>");
