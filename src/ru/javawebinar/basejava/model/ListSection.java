@@ -37,4 +37,15 @@ public class ListSection extends Section {
     public String toString() {
         return items.toString();
     }
+
+    @Override
+    public String toHtml() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<ul>");
+        for (String str : items) {
+            sb.append("<li>").append(str).append("</li>");
+        }
+        sb.append("</ul>");
+        return sb.toString();
+    }
 }
