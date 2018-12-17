@@ -31,7 +31,7 @@
     </table>
     <br>
     <form>
-        <input type="button" value="Добавить резюме" onclick="window.location.href='resume?uuid=null&action=edit'"/>
+        <input type="button" value="Добавить резюме" onclick="window.location.href='resume?&action=edit'"/>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

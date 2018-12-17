@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/style.css">
     <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume" scope="request"/>
+    <jsp:useBean id="act" type="java.lang.String" scope="request"/>
     <title>Резюме ${resume.fullName}</title
 </head>
 <body>
@@ -14,6 +15,7 @@
 <section>
     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="uuid" value="${resume.uuid}">
+        <input type="hidden" name="act" value="${act}">
         <dl>
             <dt>Имя:</dt>
             <dd><input type="text" name="fullName" size=50 value="${resume.fullName}"></dd>
@@ -31,93 +33,12 @@
                 <dt>${type.title}</dt>
                 <c:choose>
                     <c:when test="${type.name() == 'ACHIEVEMENT'}">
-                        <c:if test="${resume.getSection(type) != null}">
-                            <c:set var="listSection" value="${resume.getSection(type)}"/>
-                            <jsp:useBean id="listSection" type="ru.javawebinar.basejava.model.ListSection"/>
-                            <c:set var="size" value="${listSection.items.size()}"/>
-                            </br>
-                            <c:choose>
-                                <c:when test="${size > 0}">
-                                    <input type="text" name="sectionAchievement" size=30
-                                           value="<%=listSection.getItems().get(0)%>"><br/>
-                                </c:when>
-                                <c:otherwise>
-                                    <input type="text" name="sectionAchievement" size=30>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${size > 1}">
-                                    <input type="text" name="sectionAchievement" size=30
-                                           value="<%=listSection.getItems().get(1)%>"><br/>
-                                </c:when>
-                                <c:otherwise>
-                                    <input type="text" name="sectionAchievement" size=30>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${size > 2}">
-                                    <input type="text" name="sectionAchievement" size=30
-                                           value="<%=listSection.getItems().get(2)%>"><br/>
-                                </c:when>
-                                <c:otherwise>
-                                    <input type="text" name="sectionAchievement" size=30>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
-                        <c:if test="${resume.getSection(type) == null}">
-                            </br>
-                            <dd><input type="text" name="sectionAchievement" size=30></dd>
-                            </br>
-                            <dd><input type="text" name="sectionAchievement" size=30></dd>
-                            </br>
-                            <dd><input type="text" name="sectionAchievement" size=30></dd>
-                            </br>
-                        </c:if>
+                        </br>
+                        <textarea rows="5" cols="54" name="sectionAchievement"><c:if test="${resume.getSection(type) != null}"><c:set var="listSection" value="${resume.getSection(type)}"/><jsp:useBean id="listSection" type="ru.javawebinar.basejava.model.ListSection"/><c:forEach items="<%=listSection.getItems()%>" var="achievement">${achievement}&#13;&#10</c:forEach></c:if></textarea>
                     </c:when>
                     <c:when test="${type.name() == 'QUALIFICATIONS'}">
-                        <c:if test="${resume.getSection(type) != null}">
-                            <c:set var="listSectionQualifications" value="${resume.getSection(type)}"/>
-                            <jsp:useBean id="listSectionQualifications"
-                                         type="ru.javawebinar.basejava.model.ListSection"/>
-                            <c:set var="size" value="${listSectionQualifications.items.size()}"/>
                             </br>
-                            <c:choose>
-                                <c:when test="${size > 0}">
-                                    <input type="text" name="sectionQualification" size=30
-                                           value="<%=listSectionQualifications.getItems().get(0)%>"><br/>
-                                </c:when>
-                                <c:otherwise>
-                                    <input type="text" name="sectionQualification" size=30>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${size > 1}">
-                                    <input type="text" name="sectionQualification" size=30
-                                           value="<%=listSectionQualifications.getItems().get(1)%>"><br/>
-                                </c:when>
-                                <c:otherwise>
-                                    <input type="text" name="sectionQualification" size=30>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${size > 2}">
-                                    <input type="text" name="sectionQualification" size=30
-                                           value="<%=listSectionQualifications.getItems().get(2)%>"><br/>
-                                </c:when>
-                                <c:otherwise>
-                                    <input type="text" name="sectionQualification" size=30>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
-                        <c:if test="${resume.getSection(type) == null}">
-                            </br>
-                            <dd><input type="text" name="sectionQualification" size=30></dd>
-                            </br>
-                            <dd><input type="text" name="sectionQualification" size=30></dd>
-                            </br>
-                            <dd><input type="text" name="sectionQualification" size=30></dd>
-                            </br>
-                        </c:if>
+                            <textarea rows="5" cols="54" name="sectionQualification"><c:if test="${resume.getSection(type) != null}"><c:set var="listSectionQualifications" value="${resume.getSection(type)}"/><jsp:useBean id="listSectionQualifications" type="ru.javawebinar.basejava.model.ListSection"/><c:forEach items="<%=listSectionQualifications.getItems()%>" var="qualification">${qualification}&#13;&#10</c:forEach></c:if></textarea>
                     </c:when>
                     <c:otherwise>
                         <dd><input type="text" name="${type.name()}" size=30 value="${resume.getSection(type)}"></dd>

@@ -25,13 +25,13 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
+        String act = request.getParameter("act");
         Resume r;
-        if (!uuid.equals("null")) {
+        if (!act.equals("save")) {
             r = storage.get(uuid);
             r.setFullName(fullName);
         } else {
             r = new Resume(fullName);
-            storage.save(r);
         }
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
@@ -54,27 +54,41 @@ public class ResumeServlet extends HttpServlet {
                     break;
                 case ACHIEVEMENT:
                     List<String> achievements = new ArrayList<>();
-                    String[] arrayAchievements = request.getParameterValues("sectionAchievement");
-                    for (int i = 0; i < arrayAchievements.length; i++) {
-                        if (arrayAchievements[i].length() != 0) {
-                            achievements.add(arrayAchievements[i]);
+                    String achievement = request.getParameter("sectionAchievement");
+                    String[] array = achievement.split("\\r\\n");
+                    for (String anArray : array) {
+                        if (anArray.length() != 0) {
+                            achievements.add(anArray);
                         }
                     }
-                    r.addSection(type, new ListSection(achievements));
+                    if (achievements.size() != 0) {
+                        r.addSection(type, new ListSection(achievements));
+                    } else {
+                        r.getSections().remove(type);
+                    }
                     break;
                 case QUALIFICATIONS:
                     List<String> qualifications = new ArrayList<>();
-                    String[] arrayQualifications = request.getParameterValues("sectionQualification");
-                    for (int i = 0; i < arrayQualifications.length; i++) {
-                        if (arrayQualifications[i].length() != 0) {
-                            qualifications.add(arrayQualifications[i]);
+                    String qualification = request.getParameter("sectionQualification");
+                    String[] arrayQualifications = qualification.split("\\r\\n");
+                    for (String anArray : arrayQualifications) {
+                        if (anArray.length() != 0) {
+                            qualifications.add(anArray);
                         }
                     }
-                    r.addSection(type, new ListSection(qualifications));
+                    if (qualifications.size() != 0) {
+                        r.addSection(type, new ListSection(qualifications));
+                    } else {
+                        r.getSections().remove(type);
+                    }
                     break;
             }
         }
-        storage.update(r);
+        if (!act.equals("save")) {
+            storage.update(r);
+        } else {
+            storage.save(r);
+        }
         response.sendRedirect("resume");
     }
 
@@ -94,10 +108,12 @@ public class ResumeServlet extends HttpServlet {
                 return;
             case "view":
             case "edit":
-                if (!uuid.equals("null")) {
+                if (uuid != null) {
                     r = storage.get(uuid);
+                    request.setAttribute("act", "edit");
                 } else {
-                    r = new Resume("null", "Новое резюме");
+                    r = new Resume("Новое резюме");
+                    request.setAttribute("act", "save");
                 }
                 break;
             default:
