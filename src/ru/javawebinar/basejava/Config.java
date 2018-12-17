@@ -1,5 +1,8 @@
 package ru.javawebinar.basejava;
 
+import ru.javawebinar.basejava.storage.SqlStorage;
+import ru.javawebinar.basejava.storage.Storage;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,6 +18,7 @@ public class Config {
     private String url;
     private String user;
     private String password;
+    private final Storage storage;
 
     public static Config get() {
         return INSTANCE;
@@ -27,6 +31,7 @@ public class Config {
             url = props.getProperty("db.url");
             user = props.getProperty("db.user");
             password = props.getProperty("db.password");
+            storage = new SqlStorage(props.getProperty("db.url"), props.getProperty("db.user"), props.getProperty("db.password"));
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
         }
@@ -46,5 +51,9 @@ public class Config {
 
     public String getPassword() {
         return password;
+    }
+
+    public Storage getStorage() {
+        return storage;
     }
 }
