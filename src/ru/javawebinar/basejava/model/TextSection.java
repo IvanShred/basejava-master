@@ -37,8 +37,4 @@ public class TextSection extends Section {
         return text;
     }
 
-    @Override
-    public String toHtml() {
-        return toString();
-    }
 }
