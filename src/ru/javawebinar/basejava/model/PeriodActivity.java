@@ -13,6 +13,8 @@ import java.util.Objects;
 public class PeriodActivity implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    public static final PeriodActivity EMPTY = new PeriodActivity();
+
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateBegin;
     @XmlJavaTypeAdapter(LocalDateAdapter.class)

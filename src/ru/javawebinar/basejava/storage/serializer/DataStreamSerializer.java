@@ -62,13 +62,13 @@ public class DataStreamSerializer implements StreamSerializer {
                     case PERSONAL:
                     case OBJECTIVE:
                         String text = dis.readUTF();
-                        resume.addSection(sectionType, new TextSection(text));
+                        resume.setSection(sectionType, new TextSection(text));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         List<String> items = new ArrayList<>();
                         readCollection(dis, () -> items.add(dis.readUTF()));
-                        resume.addSection(sectionType, new ListSection(items));
+                        resume.setSection(sectionType, new ListSection(items));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -86,7 +86,7 @@ public class DataStreamSerializer implements StreamSerializer {
                             });
                             organizations.add(new Organization(name, url, periods));
                         });
-                        resume.addSection(sectionType, new OrganizationSection(organizations));
+                        resume.setSection(sectionType, new OrganizationSection(organizations));
                         break;
                 }
             });
@@ -108,13 +108,13 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private void writeDate(DataOutputStream dos, LocalDate date) throws IOException{
+    private void writeDate(DataOutputStream dos, LocalDate date) throws IOException {
         dos.writeInt(date.getYear());
         dos.writeInt(date.getMonthValue());
         dos.writeInt(date.getDayOfMonth());
     }
 
-    private LocalDate readDate(DataInputStream dis) throws IOException{
+    private LocalDate readDate(DataInputStream dis) throws IOException {
         int dateYear = dis.readInt();
         int dateMonth = dis.readInt();
         int dateDay = dis.readInt();

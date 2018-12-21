@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,10 +11,21 @@ import java.util.Objects;
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    public static final Organization EMPTY = new Organization("", "", PeriodActivity.EMPTY);
+
     private Link homePage;
     private List<PeriodActivity> periods;
 
     public Organization() {
+    }
+
+    public Organization(String name, String url, PeriodActivity... periods) {
+        this(new Link(name, url), Arrays.asList(periods));
+    }
+
+    public Organization(Link homePage, List<PeriodActivity> periods) {
+        this.homePage = homePage;
+        this.periods = periods;
     }
 
     public Organization(String name, String url, List<PeriodActivity> periods) {

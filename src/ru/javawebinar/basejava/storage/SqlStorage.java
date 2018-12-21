@@ -52,7 +52,7 @@ public class SqlStorage implements Storage {
                         if (typeSection != null) {
                             SectionType type = SectionType.valueOf(typeSection);
                             String value = rs.getString("value_section");
-                            r.addSection(type, JsonParser.read(value, Section.class));
+                            r.setSection(type, JsonParser.read(value, Section.class));
                         }
                     } while (rs.next());
                     return r;
@@ -124,7 +124,7 @@ public class SqlStorage implements Storage {
                         while (rs.next()) {
                             SectionType type = SectionType.valueOf(rs.getString("type_section"));
                             String value = rs.getString("value_section");
-                            map.get(rs.getString("resume_uuid")).addSection(type, JsonParser.read(value, Section.class));
+                            map.get(rs.getString("resume_uuid")).setSection(type, JsonParser.read(value, Section.class));
                         }
                     }
                     return new ArrayList<>(map.values());
