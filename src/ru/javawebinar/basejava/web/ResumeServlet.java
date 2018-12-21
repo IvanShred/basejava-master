@@ -82,14 +82,14 @@ public class ResumeServlet extends HttpServlet {
                         r.setSection(type, new OrganizationSection(orgs));
                         break;
                 }
-                if (isCreate) {
-                    storage.save(r);
-                } else {
-                    storage.update(r);
-                }
-                response.sendRedirect("resume");
             }
         }
+        if (isCreate) {
+            storage.save(r);
+        } else {
+            storage.update(r);
+        }
+        response.sendRedirect("resume");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
